@@ -1,0 +1,101 @@
+@import url('https://fonts.googleapis.com/css2?family=Anonymous+Pro:ital,wght@0,400;0,700;1,400;1,700&display=swap');
+
+@import url('https://fonts.googleapis.com/css2?family=Roboto+Mono:ital,wght@0,100..700;1,100..700&display=swap');
+
+body {
+  background-color: #292929;
+  font-family: "Anonymous Pro";
+  color: white;
+}
+
+#menu-nav {
+  height: 80px;
+}
+
+#menu-content img {
+  width: 60px;
+}
+
+#text {
+  max-width: 900px;
+  font-family: "Roboto Mono";
+  margin-top: 130px !important;
+  margin-bottom: 130px !important;
+}
+
+#text h1 {
+  font-size: 50px;
+  font-weight: 600;
+}
+
+#text h5 {
+  color: #444294;
+  width: 580px;
+  font-size: 22px;
+}
+
+#text #button {
+  cursor: pointer;
+  margin-top: 40px !important;
+  border: none;
+  border-radius: 20px;
+  width: 230px;
+  height: 60px;
+  font-size: 23px;
+  font-weight: 600;
+  background-color: #444294;
+  color: white;
+  transition: 0.2s;
+}
+
+#text #button a {
+  color: white;
+  text-decoration: none;
+}
+
+#text #button:hover {
+  transform: scale(1.03);
+}
+
+#image {
+  background-color: #444294;
+  height: 500px;
+}
+
+.container {
+  max-width: 1366px;
+}
+
+#content {
+  background: #444294;
+  background: linear-gradient(180deg, #444294 0%, #242443 100%);
+  height: 100vh;
+}
+
+#login-content {
+  margin: 15% 0;
+}
+
+#login-div h2 {
+  font-size: 30px;
+  font-weight: 600;
+}
+
+#login-div label {
+  font-size: 18px;
+}
+
+#login-div input {
+  font-size: 16px;
+  height: 40px;
+  width: 325px;
+  padding: 0px 10px;
+  border: 1px solid #818181;
+  border-radius: 10px;
+  background-color: #292929;
+  color: white;
+}
+
+#login-div div div + div {
+  margin-top: 8%;
+}

@@ -73,26 +73,8 @@ body {
   padding: 0 10px;
 }
 
-#login-content {
-  margin: 13% 0;
-}
-
-#logo-todo-login {
-  margin-top: -2%;
-  padding: 0 30px;
-}
-
-#logo-todo-login img {
-  filter: grayscale(100%);
-  width: 70px;
-}
-
-#login-text {
-  margin: 4% 8%;
-}
-
-#login-div {
-  margin: 7% 7%;
+#image-login {
+  margin: 20px 0 10px;
 }
 
 #login-div h2 {
@@ -101,12 +83,12 @@ body {
 }
 
 #login-div label {
-  font-size: 18px;
+  font-size: 15px;
 }
 
 #login-div input {
   font-size: 16px;
-  height: 40px;
+  height: 33px;
   width: 325px;
   padding: 0px 10px;
   border-radius: 10px;
@@ -116,11 +98,30 @@ body {
 }
 
 #login-div div div + div {
-  margin-top: 8%;
+  margin-top: 4%;
+}
+
+#login-text {
+  margin: 0 12%;
 }
 
 #new-user {
   margin-top: 3% !important;
+}
+
+#submit {
+  border: none;
+  border-radius: 10px;
+  color: white;
+  background-color: #aa3939;
+  width: 325px;
+  height: 40px;
+  margin-top: 10px;
+  transition: 0.2s;
+}
+
+#submit:hover {
+  transform: scale(1.03);
 }
 
 #new-user a {

@@ -1,46 +1,60 @@
-@media screen and (max-width: 1430px) {
-    #login-text {
-        margin: 4% 4%;
+@media screen and (min-width: 1600px) {
+    #image-login {
+        margin: 40px 0 20px;
     }
-}
 
-@media screen and (max-width: 1370px) {
+    #login-div h2 {
+        margin-left: 6% !important;
+    }
+
     #login-text {
-        margin: 4% 2%;
+        margin: 5% 18%;
     }
 }
 
 @media screen and (max-width: 1340px) {
     #login-text {
-        margin: 4% -1%;
+        margin: 0 11.5%;
     }
 }
 
-@media screen and (max-width: 1290px) {
-    #login-div {
-        margin: 7% 5%;
+@media screen and (max-width: 1310px) {
+    #login-text {
+        margin: 0 10.5%;
+    }
+}
+
+@media screen and (max-width: 1270px) {
+    #login-text {
+        margin: 0 9.5%;
+    }
+}
+
+@media screen and (max-width: 1240px) {
+    #login-text {
+        margin: 0 9%;
     }
 }
 
 @media screen and (max-width: 1230px) {
-    #login-div {
-        margin: 7% 3%;
+    #login-text {
+        margin: 0 8.5%;
     }
 }
 
 @media screen and (max-width: 1210px) {
-    #login-div {
-        margin: 7% 2%;
+    #login-text {
+        margin: 0 7.5%;
     }
 }
 
 @media screen and (max-width: 1199px) {
-    #login-content {
-        margin: 5% 0;
+    #login-text {
+        margin: 0 7.5%;
     }
 
     #login-div {
-        max-width: 375px;
-        margin: auto;
+        width: 390px;
+        margin: auto !important;
     }
 }

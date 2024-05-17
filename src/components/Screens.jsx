@@ -5,43 +5,10 @@ import Col from 'react-bootstrap/Col';
 import LoginContent from './LoginDiv';
 import RegisterContent from './RegisterDiv';
 import { Link } from 'react-router-dom';
-import { useState, useEffect } from 'react';
+import { useEffect } from 'react';
+import { createData } from '../api/routes/routes';
 
 export function Screen () {
-    useEffect(() => {
-        const userNameInput = document.querySelector("#user-name").value;
-        const passwordInput = document.querySelector("#password").value;
-
-        const userNameRegisterInput = document.querySelector("#user-name-register").value;
-        const emailRegisterInput = document.querySelector("#email-register").value;
-        const passwordRegisterInput = document.querySelector("#password-register").value;
-        const confirmPassRegisterInput = document.querySelector("#confirm-password").value;
-
-        const data = {
-            userNameRegistered: userNameRegisterInput,
-            passwordRegistered: passwordRegisterInput,
-            confirmPassRegistered: confirmPassRegisterInput
-        }
-
-        fetch("/updatedData", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify(data) 
-        })
-        .then(response => {
-            if(!response.ok) {
-                throw new Error("Response is not OK!");
-            }
-
-            console.log("Data updated.");
-        })
-        .catch(error => {
-            console.log("Error updating data: ", error);
-        });
-    }, []); 
-
     return (
         <>
             <Container className="p-0">

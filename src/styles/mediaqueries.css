@@ -1,0 +1,46 @@
+@media screen and (max-width: 1430px) {
+    #login-text {
+        margin: 4% 4%;
+    }
+}
+
+@media screen and (max-width: 1370px) {
+    #login-text {
+        margin: 4% 2%;
+    }
+}
+
+@media screen and (max-width: 1340px) {
+    #login-text {
+        margin: 4% -1%;
+    }
+}
+
+@media screen and (max-width: 1290px) {
+    #login-div {
+        margin: 7% 5%;
+    }
+}
+
+@media screen and (max-width: 1230px) {
+    #login-div {
+        margin: 7% 3%;
+    }
+}
+
+@media screen and (max-width: 1210px) {
+    #login-div {
+        margin: 7% 2%;
+    }
+}
+
+@media screen and (max-width: 1199px) {
+    #login-content {
+        margin: 5% 0;
+    }
+
+    #login-div {
+        max-width: 375px;
+        margin: auto;
+    }
+}

@@ -1,6 +1,15 @@
 import { Link } from 'react-router-dom';
+import { useForm } from 'react-hook-form';
 
 export default function LoginContent () {
+    const {register, handleSubmit} = useForm()
+
+    const url = "http://localhost:8000/user";
+    
+    function SubmitForm (data) {
+        
+    }
+
     return (
         <>
             <div id="login-content" className="text-center">
@@ -12,14 +21,14 @@ export default function LoginContent () {
                     <h2 className="ms-3">Login</h2>
 
                     <div id="login-text">
-                        <form>
+                        <form onSubmit={handleSubmit(SubmitForm)}>
                             <div>
                                 <label htmlFor="user-name">Usuário</label><br/>
-                                <input type="text" id="user-name" placeholder="Seu usuário" autoFocus/>
+                                <input type="text" id="user-name" placeholder="Seu usuário" autoFocus {...register("usernameLogin")}/>
                             </div>
                             <div>
                                 <label htmlFor="password">Senha</label><br/>
-                                <input type="text" id="password" placeholder="Sua senha"/>
+                                <input type="text" id="password" placeholder="Sua senha" {...register("passwordLogin")}/>
                             </div>
                             <div>
                                 <button id="submit">Entrar</button>

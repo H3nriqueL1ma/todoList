@@ -16,6 +16,8 @@ export function createData (url, data) {
     .catch(error => {
         console.log("Error updating data: ", error);
     });
-}   
+}
+
+
 
 export default createData;

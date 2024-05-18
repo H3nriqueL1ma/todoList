@@ -8,8 +8,6 @@ export default function RegisterContent () {
     const url = "http://localhost:8000/createdData";
     
     function SubmitForm (data) {
-        console.log(data);
-
         if (data.confirmRegistered !== data.passwordRegistered) {
             return window.alert("Senha incompátivel!");
         }
@@ -29,7 +27,7 @@ export default function RegisterContent () {
                 </div>
 
                 <div id="login-div" className="text-start">
-                    <h2 className="ms-3">Login</h2>
+                    <h2 className="ms-3">Registre-se</h2>
 
                     <div id="login-text">
                         <form onSubmit={handleSubmit(SubmitForm)}>

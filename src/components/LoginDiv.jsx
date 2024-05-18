@@ -1,13 +1,20 @@
 import { Link } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
+import { readData } from '../api/routes/routes';
 
 export default function LoginContent () {
     const {register, handleSubmit} = useForm()
 
-    const url = "http://localhost:8000/user";
+    const url = "http://localhost:8000/user/verify-user-credentials";
     
-    function SubmitForm (data) {
-        
+    async function SubmitForm (data) {
+        const user = await readData(url, data);
+
+        if (user.message === 1) {
+            console.log("Acesso autorizado.");
+        } else {
+            console.log("Acesso negado.");
+        }
     }
 
     return (

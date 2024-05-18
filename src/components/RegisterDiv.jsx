@@ -1,23 +1,27 @@
 import { Link } from 'react-router-dom';
 import { useForm } from "react-hook-form";
-import createData from '../api/routes/routes';
+import { createData } from '../api/routes/routes';
 
 export default function RegisterContent () {
     const {register, handleSubmit} = useForm()
 
-    const url = "http://localhost:8000/createdData";
+    const url = "http://localhost:8000/user";
     
     function SubmitForm (data) {
         if (data.confirmRegistered !== data.passwordRegistered) {
             return window.alert("Senha incompátivel!");
         }
 
-        console.log("Conta criada.");
+        console.log("Dados da conta: ", data);
 
-        createData(url, data);
+        const result = createData(url, data);
+
+        if (!result) {
+            return window.alert("Credenciais já registradas!");
+        }
+
+        return window.alert("Usuário registrado com sucesso!");
     }
-
-    
 
     return (
         <>
@@ -38,7 +42,8 @@ export default function RegisterContent () {
                                     id="user-name-register" 
                                     placeholder="Seu usuário" 
                                     autoFocus 
-                                    {...register("userNameRegistered")}/>
+                                    {...register("userNameRegistered")}
+                                    maxLength={40}/>
                             </div>
                             <div>
                                 <label htmlFor="email-register">E-mail</label><br/>
@@ -46,21 +51,24 @@ export default function RegisterContent () {
                                     type="text" 
                                     id="email-register" 
                                     placeholder="Seu e-mail" 
-                                    {...register("emailRegistered")}/>
+                                    {...register("emailRegistered")}
+                                    maxLength={50}/>
                             </div>
                             <div>
                                 <label htmlFor="password-register">Senha</label><br/>
                                 <input 
                                     type="text" id="password-register" placeholder="Deve ter no mínimo 7 caracteres" {...register("passwordRegistered")} 
                                     required 
-                                    minLength={7}/>
+                                    minLength={7}
+                                    maxLength={40}/>
                             </div>
                             <div>
                                 <label htmlFor="confirm-password">Confirme sua senha</label><br/>
                                 <input 
                                     type="text" id="confirm-password" placeholder="Deve ter no mínimo 7 caracteres" {...register("confirmRegistered")} 
                                     required 
-                                    minLength={7}/>
+                                    minLength={7}
+                                    maxLength={40}/>
                             </div>
                             <div>
                                 <button id="submit">Registrar-se</button>

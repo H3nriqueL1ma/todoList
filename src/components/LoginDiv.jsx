@@ -1,19 +1,22 @@
 import { Link } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { readData } from '../api/routes/routes';
+import { useState } from 'react';
 
 export default function LoginContent () {
-    const {register, handleSubmit} = useForm()
-
+    const { register, handleSubmit } = useForm();
+    const [errorMessage, setErrorMessage] = useState("");
     const url = "http://localhost:8000/user/verify-user-credentials";
     
     async function SubmitForm (data) {
         const user = await readData(url, data);
 
-        if (user.message === 1) {
-            console.log("Acesso autorizado.");
+        if (user.message === 200) {
+            setErrorMessage("Acesso autorizado!");
+        } else if (user.message === 401) {
+            setErrorMessage("Senha incorreta!");
         } else {
-            console.log("Acesso negado.");
+            setErrorMessage("Usuário não registrado!");
         }
     }
 
@@ -41,6 +44,7 @@ export default function LoginContent () {
                                 <button id="submit">Entrar</button>
                             </div>
                         </form>
+                        {errorMessage && <p className="error-message">{errorMessage}</p>}
                         <div id="new-user">
                             <Link to={"/register"}>Novo Usuário?</Link>
                         </div>

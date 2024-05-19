@@ -1,26 +1,28 @@
 import { Link } from 'react-router-dom';
 import { useForm } from "react-hook-form";
 import { createData } from '../api/routes/routes';
+import { useState } from 'react';
 
 export default function RegisterContent () {
-    const {register, handleSubmit} = useForm()
-
+    const { register, handleSubmit, setError, formState: { errors } } = useForm();
+    const [errorMessage, setErrorMessage] = useState("");
     const url = "http://localhost:8000/user";
-    
-    function SubmitForm (data) {
+
+    async function SubmitForm (data) {
         if (data.confirmRegistered !== data.passwordRegistered) {
-            return window.alert("Senha incompátivel!");
+            setError("confirmRegistered", { type: "manual", message: "Senha incompátivel!"});
+            return;
         }
 
         console.log("Dados da conta: ", data);
 
-        const result = createData(url, data);
+        const result = await createData(url, data);
 
-        if (!result) {
-            return window.alert("Credenciais já registradas!");
+        if (result.message === 409) {
+            setErrorMessage("Credenciais já registradas!");
+        } else {
+            setErrorMessage("Usuário registrado com sucesso!");
         }
-
-        return window.alert("Usuário registrado com sucesso!");
     }
 
     return (
@@ -57,23 +59,27 @@ export default function RegisterContent () {
                             <div>
                                 <label htmlFor="password-register">Senha</label><br/>
                                 <input 
-                                    type="text" id="password-register" placeholder="Deve ter no mínimo 7 caracteres" {...register("passwordRegistered")} 
-                                    required 
-                                    minLength={7}
-                                    maxLength={40}/>
+                                    type="text" id="password-register" placeholder="Deve ter no mínimo 7 caracteres" {...register("passwordRegistered", {
+                                        required: "Senha é obrigatória!",
+                                        minLength: { value: 7, message: "Insira uma senha acima de 7 caracteres!" }
+                                    })} />
+                                {errors.passwordRegistered && <p className="error-message">{errors.passwordRegistered.message}</p>}
                             </div>
                             <div>
                                 <label htmlFor="confirm-password">Confirme sua senha</label><br/>
                                 <input 
-                                    type="text" id="confirm-password" placeholder="Deve ter no mínimo 7 caracteres" {...register("confirmRegistered")} 
-                                    required 
-                                    minLength={7}
-                                    maxLength={40}/>
+                                    type="text" id="confirm-password" placeholder="Deve ter no mínimo 7 caracteres" {...register("confirmRegistered", {
+                                        required: "Confirmação de senha é obrigatória!",
+                                        minLength: { value: 7, message: "Insira uma senha acima de 7 caracteres!" }
+                                    })} 
+                                    maxLength={40} />
+                                {errors.confirmRegistered && <p className="error-message">{errors.confirmRegistered.message}</p>}
                             </div>
                             <div>
                                 <button id="submit">Registrar-se</button>
                             </div>
                         </form>
+                        {errorMessage && <p className="error-message">{errorMessage}</p>}
                         <div id="new-user">
                             <Link to={"/login"}>Já tem uma conta?</Link>
                         </div>

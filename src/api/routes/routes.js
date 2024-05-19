@@ -1,22 +1,19 @@
 /* eslint-disable import/no-anonymous-default-export */
-export function createData (url, data) {
-    fetch(url, {
+export async function createData (url, data) {
+    const user = await fetch(url, {
         method: "POST",
         headers: {
             "Content-Type": "application/json"
         },
         body: JSON.stringify(data) 
     })
+    .then(response => response.json())
     .then(response => {
-        if(!response.ok) {
-            throw new Error("Response is not OK!");
-        }
-
-        console.log("Data updated.");
+        return response;
     })
-    .catch(error => {
-        console.log("Error updating data: ", error);
-    });
+    .catch(error => console.log("Error updating data: ", error));
+
+    return user;
 }
 
 export async function readData (url, data) {
@@ -28,8 +25,8 @@ export async function readData (url, data) {
         body: JSON.stringify(data)
     })
     .then(response => response.json())
-    .then(result => {
-        return result;
+    .then(response => {
+        return response;
     })
     .catch(error => {
         console.log("Error fetching data user: ", error);

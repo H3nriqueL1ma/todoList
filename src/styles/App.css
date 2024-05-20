@@ -171,3 +171,14 @@ body {
   margin-top: 4px;
   margin-bottom: 0;
 }
+
+#password-register {
+  width: 305px;
+  padding-right: 40px !important;
+}
+
+#pass-span span {
+  color: black;
+  margin-top: 3px;
+  margin-left: -32px;
+}

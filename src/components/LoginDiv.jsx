@@ -2,11 +2,28 @@ import { Link } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { readData } from '../api/routes/routes';
 import { useState } from 'react';
+import Icon from 'react-icons-kit';
+import { eyeOff } from 'react-icons-kit/feather/eyeOff.js';
+import { eye } from 'react-icons-kit/feather/eye.js';
 
 export default function LoginContent () {
     const { register, handleSubmit } = useForm();
     const [errorMessage, setErrorMessage] = useState("");
+
+    const [type, setType] = useState("password");
+    const [icon, setIcon] = useState(eyeOff);
+
     const url = "http://localhost:8000/user/verify-user-credentials";
+
+    function handleToggle () {
+        if (type === "password") {
+            setIcon(eye);
+            setType("text");
+        } else {
+            setIcon(eyeOff);
+            setType("password");
+        }
+    }
     
     async function SubmitForm (data) {
         const user = await readData(url, data);
@@ -38,7 +55,12 @@ export default function LoginContent () {
                             </div>
                             <div>
                                 <label htmlFor="password">Senha</label><br/>
-                                <input type="text" id="password" placeholder="Sua senha" {...register("passwordLogin")}/>
+                                <div id="pass-span">
+                                    <input type={type} id="password" placeholder="Sua senha" {...register("passwordLogin")}/>
+                                    <span className="span-eye" onClick={handleToggle}>
+                                        <Icon icon={icon} size={23} />
+                                    </span>
+                                </div>
                             </div>
                             <div>
                                 <button id="submit">Entrar</button>

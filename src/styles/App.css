@@ -103,6 +103,15 @@ body {
   padding: 0 0;
 }
 
+#title {
+  margin-top: 18%;
+}
+
+#title h1 {
+  font-size: 60px;
+  font-weight: 600;
+}
+
 #login-content {
   overflow-y: auto;
   overflow-x: hidden;

@@ -4,9 +4,8 @@ import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import LoginContent from './LoginDiv';
 import RegisterContent from './RegisterDiv';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useEffect } from 'react';
-import { createData } from '../api/routes/routes';
 
 export function Screen () {
     return (
@@ -45,6 +44,12 @@ export function ScreenLogin () {
                     <Col id="content" xl={4}>
                         <LoginContent />
                     </Col>
+                    <Col>
+                        <div id="title" className="text-start p-5">
+                            <h1>Bem-vindo ao ToDo List!</h1>
+                            <h5>Faça o login para acessar sua conta.</h5>
+                        </div>
+                    </Col>
                 </Row>
             </Container>
         </>
@@ -59,10 +64,42 @@ export function ScreenRegister () {
                     <Col id="content" xl={4}>
                         <RegisterContent />
                     </Col>
+                    <Col>
+                        <div id="title" className="text-start p-5">
+                            <h1>Bem-vindo ao ToDo List!</h1>
+                            <h5>Crie sua conta de Usuário.</h5>
+                        </div>
+                    </Col>
                 </Row>
             </Container>            
         </>
     );
 }
 
-export default { Screen, ScreenLogin, ScreenRegister }
+export function ScreenHome () {
+    return (
+        <>
+            <h1>Olá, usuário. Você está no sistema.</h1>
+            <div>
+                <Link to={"/logout"}>Sair</Link>
+            </div>
+        </>
+    );
+}
+
+export function ScreenLogOut () {
+    const navigate = useNavigate();
+    useEffect(() => {
+        setTimeout(() => {
+            navigate("/");
+        }, 2000);
+    }, [navigate]);
+
+    return (
+        <>
+            <h1>Saindo da conta...</h1>
+        </>
+    );
+}
+
+export default { Screen, ScreenLogin, ScreenRegister, ScreenHome, ScreenLogOut }

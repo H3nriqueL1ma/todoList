@@ -1,4 +1,5 @@
-import { Link } from 'react-router-dom';
+/* eslint-disable import/no-anonymous-default-export */
+import { Link, useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { readData } from '../api/routes/routes';
 import { useState } from 'react';
@@ -13,7 +14,9 @@ export default function LoginContent () {
     const [type, setType] = useState("password");
     const [icon, setIcon] = useState(eyeOff);
 
-    const url = "http://localhost:8000/user/verify-user-credentials";
+    const url = "http://localhost:8000/user/login";
+
+    const navigate = useNavigate();
 
     function handleToggle () {
         if (type === "password") {
@@ -29,7 +32,8 @@ export default function LoginContent () {
         const user = await readData(url, data);
 
         if (user.message === 200) {
-            setErrorMessage("Acesso autorizado!");
+            localStorage.setItem("isLoggedIn", true);
+            navigate("/home");
         } else if (user.message === 401) {
             setErrorMessage("Senha incorreta!");
         } else {

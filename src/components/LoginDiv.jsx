@@ -32,7 +32,6 @@ export default function LoginContent () {
         const user = await readData(url, data);
 
         if (user.message === 200) {
-            localStorage.setItem("isLoggedIn", true);
             navigate("/home");
         } else if (user.message === 401) {
             setErrorMessage("Senha incorreta!");

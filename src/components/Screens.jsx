@@ -5,7 +5,6 @@ import Col from 'react-bootstrap/Col';
 import LoginContent from './LoginDiv';
 import RegisterContent from './RegisterDiv';
 import { Link, useNavigate } from 'react-router-dom';
-import { useEffect } from 'react';
 
 export function Screen () {
     return (
@@ -22,7 +21,7 @@ export function Screen () {
                         <h1>Finalmente organize seu trabalho sem dificuldades!</h1>
                         <h5 className="m-auto">Alcance a organização e sua tranquilidade com o ToDo List.</h5>
                         <div id="button" className="m-auto">
-                            <Link target="_blank" rel="noopener noreferrer" className="w-100 h-100 d-flex align-items-center justify-content-center" to={"/login"}>Use agora</Link>
+                            <Link className="w-100 h-100 d-flex align-items-center justify-content-center" to={"/login"}>Use agora</Link>
                         </div>
                     </div>
                 </Row>
@@ -77,29 +76,36 @@ export function ScreenRegister () {
 }
 
 export function ScreenHome () {
-    return (
-        <>
-            <h1>Olá, usuário. Você está no sistema.</h1>
-            <div>
-                <Link to={"/logout"}>Sair</Link>
-            </div>
-        </>
-    );
-}
-
-export function ScreenLogOut () {
     const navigate = useNavigate();
-    useEffect(() => {
+
+    function handleTemp () {
         setTimeout(() => {
             navigate("/");
-        }, 2000);
-    }, [navigate]);
+        }, 1000);
+    }
 
     return (
         <>
-            <h1>Saindo da conta...</h1>
+            <Container id="container-home" className="p-0">
+                <Row id="row-title-input" className="m-0">
+                    <Col>
+                        <div className="text-center mt-5 mb-5">
+                            <div id="div-title" className="text-start">
+                                <h1 id="title-todo">TODO</h1>
+                            </div>
+                            <input id="new-todo" placeholder="Crie uma nova ToDo..." type="text" className="pe-5 ps-5" />
+                        </div>
+                        <div className="d-flex justify-content-between">
+                            <h5 id="hello-user" className="ms-3">Bem-vindo(a), Usuário!</h5>
+                            <div className="me-3">
+                                <Link onClick={handleTemp}>Sair</Link>
+                            </div>
+                        </div>
+                    </Col>
+                </Row>
+            </Container>
         </>
     );
 }
 
-export default { Screen, ScreenLogin, ScreenRegister, ScreenHome, ScreenLogOut }
+export default { Screen, ScreenLogin, ScreenRegister, ScreenHome }

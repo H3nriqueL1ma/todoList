@@ -5,6 +5,9 @@ import Col from 'react-bootstrap/Col';
 import LoginContent from './LoginDiv';
 import RegisterContent from './RegisterDiv';
 import { Link, useNavigate } from 'react-router-dom';
+import { useForm } from 'react-hook-form';
+import { createTask } from '../api/routes/routes';
+import { useEffect, useState } from 'react';
 
 export function Screen () {
     return (
@@ -77,11 +80,29 @@ export function ScreenRegister () {
 
 export function ScreenHome () {
     const navigate = useNavigate();
+    const [username, setUsername] = useState("");
+
+    useEffect(() => {
+        const storedUsername = localStorage.getItem("username");
+        if (storedUsername) {
+            setUsername(storedUsername);
+        } else {
+            navigate("/");
+        }
+    }, [navigate]);
 
     function handleTemp () {
         setTimeout(() => {
             navigate("/");
         }, 1000);
+    }
+
+    const { register, handleSubmit } = useForm();
+    const url = "http://localhost:8000/user/task";
+
+    async function SubmitTask (data) {
+        const taskData = { ...data, username }
+        await createTask(url, taskData);
     }
 
     return (
@@ -93,7 +114,9 @@ export function ScreenHome () {
                             <div id="div-title" className="text-start">
                                 <h1 id="title-todo">TODO</h1>
                             </div>
-                            <input id="new-todo" placeholder="Crie uma nova ToDo..." type="text" className="pe-5 ps-5" />
+                            <form onSubmit={handleSubmit(SubmitTask)}>
+                                <input id="new-todo" placeholder="Crie uma nova ToDo..." type="text" className="pe-5 ps-5" autoFocus {...register("taskUser")}/>
+                            </form>
                         </div>
                         <div className="d-flex justify-content-between">
                             <h5 id="hello-user" className="ms-3">Bem-vindo(a), Usuário!</h5>
@@ -102,6 +125,22 @@ export function ScreenHome () {
                             </div>
                         </div>
                     </Col>
+                </Row>
+                <Row className="m-0">
+                    <div id="tasks" className="m-auto p-3">
+                        <table className="m-auto">
+                            <tr id="task">
+                                <td>
+                                    <button id="option">
+                                        <i class="bi bi-check-circle"></i>
+                                    </button>
+                                </td>
+                                <td id="text-task">
+                                    Teste de Task
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
                 </Row>
             </Container>
         </>

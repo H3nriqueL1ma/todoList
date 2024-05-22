@@ -8,9 +8,7 @@ export async function createData (url, data) {
         body: JSON.stringify(data) 
     })
     .then(response => response.json())
-    .then(response => {
-        return response;
-    })
+    .then(response => { return response; })
     .catch(error => console.log("Error updating data: ", error));
 
     return user;
@@ -25,14 +23,25 @@ export async function readData (url, data) {
         body: JSON.stringify(data)
     })
     .then(response => response.json())
-    .then(response => {
-        return response;
-    })
-    .catch(error => {
-        console.log("Error fetching data user: ", error);
-    });
+    .then(response => { return response; })
+    .catch(error => console.log("Error fetching data user: ", error));
 
     return user;
+}
+
+export async function createTask (url, data) {
+    const task = await fetch(url, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify(data)
+    })
+    .then(response => response.json())
+    .then(response => { return response; })
+    .catch(error => console.log("Error fetching data task: ", error))
+
+    return task;
 }
 
 export default { createData, readData };

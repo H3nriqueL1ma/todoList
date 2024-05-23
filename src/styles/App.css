@@ -165,6 +165,7 @@ body {
   height: 40px;
   margin-top: 10px;
   transition: 0.2s;
+  box-shadow: 1px 1px 15px rgba(0, 0, 0, 0.1);
 }
 
 #submit:hover {
@@ -196,7 +197,7 @@ body {
 
 #row-title-input {
   background: #801515;
-  background: linear-gradient(180deg, rgba(128,21,21,1) 0%, rgba(170,57,57,1) 100%);
+  background: linear-gradient(360deg, rgba(128,21,21,1) 0%, rgba(170,57,57,1) 100%);
   height: 287px;
 }
 
@@ -221,13 +222,28 @@ body {
 }
 
 #new-todo {
-  border: 1px solid white;
+  border: none;
   border-radius: 10px;
   font-size: 20px;
   height: 60px;
   width: 648px;
   background-color: #393939;
   color: white;
+}
+
+#submit-todo {
+  border: none;
+  border-radius: 10px;
+  margin-left: 15px;
+  transition: 0.2s;
+  background-color: #aa3939;
+  color: white;
+  padding: 0 15px;
+  box-shadow: 1px 1px 15px rgba(0, 0, 0, 0.1);
+}
+
+#submit-todo:hover {
+  transform: scale(1.03);
 }
 
 #tasks {
@@ -240,22 +256,42 @@ body {
   padding-bottom: 30px !important;
 }
 
+table {
+  border-collapse: separate;
+  border-spacing: 0 20px;
+}
 
 #task {
   background-color: #4b4b4b;
-  border: 2px solid #801515;
+  border: 2px solid white;
+}
+
+td {
+  border: 1px solid white;
 }
 
 #text-task {
-  width: 600px;
+  width: 574px;
+  border-top: 1px solid white;
+  border-bottom: 1px solid white;
+  border-left: none;
+  border-right: none;
 }
 
-#option {
+#option, #delete {
   border: none;
   background: none;
+  padding-top: 5px;
+  margin: 0 5px;
+  
 }
 
-#option i {
-  color: #801515;
+#option i, #delete i {
+  color: #949494;
   font-size: 30px;
+  transition: 0.3s;
+}
+
+#option i:hover, #delete i:hover {
+  color: #801515 !important;
 }

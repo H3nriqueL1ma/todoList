@@ -92,6 +92,8 @@ export function ScreenHome () {
     }, [navigate]);
 
     function handleTemp () {
+        localStorage.clear();
+
         setTimeout(() => {
             navigate("/");
         }, 1000);
@@ -99,6 +101,19 @@ export function ScreenHome () {
 
     const { register, handleSubmit } = useForm();
     const url = "http://localhost:8000/user/task";
+
+
+    async function SubmitComplete (taskID) {
+        const completeURL = `${url}/${taskID}/complete`;
+
+        await fetch(completeURL, {
+            method: "PATCH",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({ completed: true })
+        });
+    }
 
     async function SubmitTask (data) {
         const taskData = { ...data, username }
@@ -112,14 +127,15 @@ export function ScreenHome () {
                     <Col>
                         <div className="text-center mt-5 mb-5">
                             <div id="div-title" className="text-start">
-                                <h1 id="title-todo">TODO</h1>
+                                <h1 id="title-todo">To Do</h1>
                             </div>
-                            <form onSubmit={handleSubmit(SubmitTask)}>
+                            <form className="d-flex justify-content-center" onSubmit={handleSubmit(SubmitTask)}>
                                 <input id="new-todo" placeholder="Crie uma nova ToDo..." type="text" className="pe-5 ps-5" autoFocus {...register("taskUser")}/>
+                                <button id="submit-todo">Adicionar</button>
                             </form>
                         </div>
                         <div className="d-flex justify-content-between">
-                            <h5 id="hello-user" className="ms-3">Bem-vindo(a), Usuário!</h5>
+                            <h5 id="hello-user" className="ms-3">Bem-vindo(a), {username}!</h5>
                             <div className="me-3">
                                 <Link onClick={handleTemp}>Sair</Link>
                             </div>
@@ -131,12 +147,17 @@ export function ScreenHome () {
                         <table className="m-auto">
                             <tr id="task">
                                 <td>
-                                    <button id="option">
+                                    <button id="option" onClick={SubmitComplete}>
                                         <i class="bi bi-check-circle"></i>
                                     </button>
                                 </td>
-                                <td id="text-task">
+                                <td id="text-task" className="ps-3 pe-3">
                                     Teste de Task
+                                </td>
+                                <td>
+                                    <button id="delete">
+                                        <i class="bi bi-trash"></i>
+                                    </button>
                                 </td>
                             </tr>
                         </table>

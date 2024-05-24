@@ -274,7 +274,7 @@ td {
   width: 574px;
   border-top: 1px solid white;
   border-bottom: 1px solid white;
-  border-left: none;
+  border-left: 1px solid white;
   border-right: none;
 }
 

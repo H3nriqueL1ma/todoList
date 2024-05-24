@@ -81,6 +81,10 @@ export function ScreenRegister () {
 export function ScreenHome () {
     const navigate = useNavigate();
     const [username, setUsername] = useState("");
+    const { register, handleSubmit } = useForm();
+    const url = "http://localhost:8000/user/task";
+    const [tasks, setTasks] = useState([]);
+
 
     useEffect(() => {
         const storedUsername = localStorage.getItem("username");
@@ -99,25 +103,41 @@ export function ScreenHome () {
         }, 1000);
     }
 
-    const { register, handleSubmit } = useForm();
-    const url = "http://localhost:8000/user/task";
-
-
-    async function SubmitComplete (taskID) {
-        const completeURL = `${url}/${taskID}/complete`;
-
-        await fetch(completeURL, {
-            method: "PATCH",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify({ completed: true })
-        });
+    async function load () {
+        await loadTasks();
     }
 
+    useEffect(() => {
+        load();
+    }, []);
+ 
     async function SubmitTask (data) {
         const taskData = { ...data, username }
-        await createTask(url, taskData);
+        const newTasks = await createTask(url, taskData);
+        setTasks(newTasks);
+        await loadTasks();
+    }
+
+    async function loadTasks () {
+        const table = document.querySelector("table");
+        table.innerHTML = '';
+
+        tasks.forEach((task) => {
+            const newRow = document.createElement("tr");
+            newRow.setAttribute("id", "task");
+            newRow.innerHTML = `
+                <td id="text-task" className="ps-3 pe-3">
+                    ${task.task_content}
+                </td>
+                <td>
+                    <button id="delete">
+                        <i class="bi bi-trash"></i>
+                    </button>
+                </td>
+            `
+
+            table.appendChild(newRow);
+        })
     }
 
     return (
@@ -145,21 +165,6 @@ export function ScreenHome () {
                 <Row className="m-0">
                     <div id="tasks" className="m-auto p-3">
                         <table className="m-auto">
-                            <tr id="task">
-                                <td>
-                                    <button id="option" onClick={SubmitComplete}>
-                                        <i class="bi bi-check-circle"></i>
-                                    </button>
-                                </td>
-                                <td id="text-task" className="ps-3 pe-3">
-                                    Teste de Task
-                                </td>
-                                <td>
-                                    <button id="delete">
-                                        <i class="bi bi-trash"></i>
-                                    </button>
-                                </td>
-                            </tr>
                         </table>
                     </div>
                 </Row>

@@ -30,7 +30,7 @@ export async function readData (url, data) {
 }
 
 export async function createTask (url, data) {
-    const task = await fetch(url, {
+    const tasks = await fetch(url, {
         method: "POST",
         headers: {
             "Content-Type": "application/json"
@@ -41,7 +41,9 @@ export async function createTask (url, data) {
     .then(response => { return response; })
     .catch(error => console.log("Error fetching data task: ", error))
 
-    return task;
+    console.log(tasks);
+
+    return tasks;
 }
 
 export default { createData, readData };

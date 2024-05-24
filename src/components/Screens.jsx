@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable import/no-anonymous-default-export */
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
@@ -6,7 +7,7 @@ import LoginContent from './LoginDiv';
 import RegisterContent from './RegisterDiv';
 import { Link, useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
-import { createTask } from '../api/routes/routes';
+import { createTask, deleteTask_, readTasks } from '../api/routes/routes';
 import { useEffect, useState } from 'react';
 
 export function Screen () {
@@ -82,62 +83,42 @@ export function ScreenHome () {
     const navigate = useNavigate();
     const [username, setUsername] = useState("");
     const { register, handleSubmit } = useForm();
-    const url = "http://localhost:8000/user/task";
+    const url_create = "http://localhost:8000/user/task";
+    const url_read = "http://localhost:8000/user/task/read-user-tasks";
+    const url_delete = "http://localhost:8000/user/task/delete-user-task";
     const [tasks, setTasks] = useState([]);
-
 
     useEffect(() => {
         const storedUsername = localStorage.getItem("username");
         if (storedUsername) {
             setUsername(storedUsername);
+            loadTasks(storedUsername)
         } else {
             navigate("/");
         }
-    }, [navigate]);
+    }, [loadTasks, navigate]);
 
     function handleTemp () {
         localStorage.clear();
-
         setTimeout(() => {
             navigate("/");
         }, 1000);
     }
-
-    async function load () {
-        await loadTasks();
-    }
-
-    useEffect(() => {
-        load();
-    }, []);
  
     async function SubmitTask (data) {
         const taskData = { ...data, username }
-        const newTasks = await createTask(url, taskData);
-        setTasks(newTasks);
-        await loadTasks();
+        await createTask(url_create, taskData);
+        await loadTasks(username);
     }
 
-    async function loadTasks () {
-        const table = document.querySelector("table");
-        table.innerHTML = '';
+    async function loadTasks (username) {
+        const userTasks = await readTasks(url_read, username);
+        setTasks(userTasks);
+    }
 
-        tasks.forEach((task) => {
-            const newRow = document.createElement("tr");
-            newRow.setAttribute("id", "task");
-            newRow.innerHTML = `
-                <td id="text-task" className="ps-3 pe-3">
-                    ${task.task_content}
-                </td>
-                <td>
-                    <button id="delete">
-                        <i class="bi bi-trash"></i>
-                    </button>
-                </td>
-            `
-
-            table.appendChild(newRow);
-        })
+    async function deleteTask (taskID) {
+        await deleteTask_(url_delete, taskID);
+        await loadTasks(username);
     }
 
     return (
@@ -165,6 +146,16 @@ export function ScreenHome () {
                 <Row className="m-0">
                     <div id="tasks" className="m-auto p-3">
                         <table className="m-auto">
+                            {tasks.map(task => (
+                                <tr key={task.task_id} id="task">
+                                    <td id="text-task">{task.task_content}</td>
+                                    <td>
+                                        <button id="delete" onClick={() => deleteTask(task.task_id)}>
+                                            <i className="bi bi-trash"></i>
+                                        </button>
+                                    </td>
+                                </tr>
+                            ))}
                         </table>
                     </div>
                 </Row>

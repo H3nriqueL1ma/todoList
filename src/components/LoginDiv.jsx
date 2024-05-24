@@ -29,15 +29,21 @@ export default function LoginContent () {
     }
     
     async function SubmitForm (data) {
-        const user = await readData(url, data);
-
-        if (user.message === 200) {
-            localStorage.setItem("username", data.usernameLogin);
-            navigate("/home");
-        } else if (user.message === 401) {
-            setErrorMessage("Senha incorreta!");
+        if (data.usernameLogin === "") {
+            setErrorMessage("Campo 'Usuário' em branco! Digite seu usuário.");
+        } else if (data.passwordLogin === "") {
+            setErrorMessage("Campo 'Senha' em branco! Digite sua senha.");
         } else {
-            setErrorMessage("Usuário não registrado!");
+            const user = await readData(url, data);
+
+            if (user.message === 200) {
+                localStorage.setItem("username", data.usernameLogin);
+                navigate("/home");
+            } else if (user.message === 401) {
+                setErrorMessage("Senha incorreta!");
+            } else {
+                setErrorMessage("Usuário não registrado!");
+            }
         }
     }
 
@@ -55,12 +61,22 @@ export default function LoginContent () {
                         <form onSubmit={handleSubmit(SubmitForm)}>
                             <div>
                                 <label htmlFor="user-name">Usuário</label><br/>
-                                <input type="text" id="user-name" placeholder="Seu usuário" autoFocus {...register("usernameLogin")}/>
+                                <input 
+                                    type="text" 
+                                    id="user-name" placeholder="Seu usuário" 
+                                    autoFocus 
+                                    {...register("usernameLogin")}
+                                />
                             </div>
                             <div>
                                 <label htmlFor="password">Senha</label><br/>
                                 <div id="pass-span">
-                                    <input type={type} id="password" placeholder="Sua senha" {...register("passwordLogin")}/>
+                                    <input 
+                                        type={type} 
+                                        id="password" 
+                                        placeholder="Sua senha" 
+                                        {...register("passwordLogin")}
+                                    />
                                     <span className="span-eye" onClick={handleToggle}>
                                         <Icon icon={icon} size={23} />
                                     </span>

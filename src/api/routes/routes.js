@@ -30,20 +30,40 @@ export async function readData (url, data) {
 }
 
 export async function createTask (url, data) {
-    const tasks = await fetch(url, {
+    await fetch(url, {
         method: "POST",
         headers: {
             "Content-Type": "application/json"
         },
         body: JSON.stringify(data)
     })
+    .catch(error => console.log("Error fetching create data task: ", error))
+}
+
+export async function readTasks (url, username) {
+    const tasks = await fetch(url, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ username })
+    })
     .then(response => response.json())
     .then(response => { return response; })
-    .catch(error => console.log("Error fetching data task: ", error))
-
-    console.log(tasks);
+    .catch(error => console.log("Error fetching read data task: ", error))
 
     return tasks;
 }
 
-export default { createData, readData };
+export async function deleteTask_ (url, taskID) {
+    await fetch(url, {
+        method: "DELETE",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ taskID })
+    })
+    .catch(error => console.log("Error fetching delete data task: ", error))
+}
+
+export default { createData, readData, createTask, readTasks, deleteTask_ };

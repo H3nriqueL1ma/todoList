@@ -26,19 +26,29 @@ export default function RegisterContent () {
     }
 
     async function SubmitForm (data) {
-        if (data.confirmRegistered !== data.passwordRegistered) {
-            setError("confirmRegistered", { type: "manual", message: "Senha incompátivel!"});
-            return;
-        }
-
-        console.log("Dados da conta: ", data);
-
-        const result = await createData(url, data);
-
-        if (result.message === 409) {
-            setErrorMessage("Usuário ou e-mail já registrado!");
+        if (data.userNameRegistered === "") {
+            setErrorMessage("Campo 'Usuário' em branco! Digite seu usuário.");
+        } else if (data.emailRegistered === "") {
+            setErrorMessage("Campo 'E-mail' em branco! Digite seu e-mail.");
+        } else if (data.passwordRegistered === "") {
+            setErrorMessage("Campo 'Senha' em branco! Digite sua senha.");
+        } else if (data.confirmRegistered === "") {
+            setErrorMessage("Campo 'Confirme sua senha' em branco! Confirme sua senha.");
         } else {
-            setErrorMessage("Usuário registrado com sucesso!");
+            if (data.confirmRegistered !== data.passwordRegistered) {
+                setError("confirmRegistered", { type: "manual", message: "Senha incompátivel!"});
+                return;
+            }
+    
+            const result = await createData(url, data);
+    
+            if (result.message === 409) {
+                setErrorMessage("Usuário ou e-mail já registrado!");
+            } else if (result.message === 404) {
+                setErrorMessage("Domínio de e-mail não existe!");
+            } else {
+                setErrorMessage("Usuário registrado com sucesso!");
+            }
         }
     }
 
@@ -62,7 +72,8 @@ export default function RegisterContent () {
                                     placeholder="Seu usuário" 
                                     autoFocus 
                                     {...register("userNameRegistered")}
-                                    maxLength={40}/>
+                                    maxLength={40}
+                                />
                             </div>
                             <div>
                                 <label htmlFor="email-register">E-mail</label><br/>
@@ -71,7 +82,8 @@ export default function RegisterContent () {
                                     id="email-register" 
                                     placeholder="Seu e-mail" 
                                     {...register("emailRegistered")}
-                                    maxLength={50}/>
+                                    maxLength={50}
+                                />
                             </div>
                             <div>
                                 <label htmlFor="password-register">Senha</label><br/>
@@ -83,7 +95,8 @@ export default function RegisterContent () {
                                         {...register("passwordRegistered", {
                                             required: "Senha é obrigatória!",
                                             minLength: { value: 7, message: "Insira uma senha acima de 7 caracteres!" }
-                                        })} />
+                                        })}
+                                    />
                                     <span className="span-eye" onClick={handleToggle}>
                                         <Icon icon={icon} size={23} />
                                     </span>
@@ -99,7 +112,8 @@ export default function RegisterContent () {
                                     {...register("confirmRegistered", {
                                         required: "Confirmação de senha é obrigatória!",
                                         minLength: { value: 7, message: "Insira uma senha acima de 7 caracteres!" }
-                                    })} />
+                                    })}
+                                />
                                 {errors.confirmRegistered && <p className="error-message">{errors.confirmRegistered.message}</p>}
                             </div>
                             <div>

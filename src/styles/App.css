@@ -91,7 +91,6 @@ body {
 
 #image {
   background-color: #aa3939;
-  height: 500px;
 }
 
 .container {
@@ -172,9 +171,17 @@ body {
   transform: scale(1.03);
 }
 
-#new-user a {
+#new-user a, #forget-pass a {
   color: #a1a1a1;
   font-weight: 600;
+}
+
+#forget-pass {
+  margin-top: 1% !important;
+}
+
+#forget-pass {
+  font-size: 15px;
 }
 
 .error-message {
@@ -186,7 +193,7 @@ body {
 
 #password-register {
   width: 305px;
-  padding-right: 40px !important;
+  padding-right: 40px;
 }
 
 #pass-span span {
@@ -296,4 +303,13 @@ td {
 
 #option i:hover, #delete i:hover {
   color: #801515 !important;
+}
+
+#image-initial-screen {
+  width: 1200px;
+  border-radius: 20px;
+  box-shadow: 1px 1px 15px black;
+  margin-top: -3%;
+  margin-bottom: 3%;
+  transition: 0.3s;
 }

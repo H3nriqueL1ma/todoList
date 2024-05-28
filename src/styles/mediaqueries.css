@@ -72,6 +72,10 @@
     #login-text {
         margin: 0 9%;
     }
+
+    #image-initial-screen {
+        width: 1100px;
+    }
 }
 
 @media screen and (max-width: 1230px) {
@@ -98,5 +102,36 @@
     #login-div {
         width: 390px;
         margin: auto !important;
+    }
+}
+
+
+@media screen and (max-width: 1140px) {
+    #image-initial-screen {
+        width: 1000px;
+    }
+}
+
+@media screen and (max-width: 1040px) {
+    #image-initial-screen {
+        width: 900px;
+    }
+}
+
+@media screen and (max-width: 1000px) {
+    #image-initial-screen {
+        width: 800px;
+    }
+}
+
+@media screen and (max-width: 840px) {
+    #image-initial-screen {
+        width: 750px;
+    }
+}
+
+@media screen and (max-width: 790px) {
+    #image {
+        display: none;
     }
 }

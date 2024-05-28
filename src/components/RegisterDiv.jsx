@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom';
 import { useForm } from "react-hook-form";
 import { createData } from '../api/routes/routes';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Icon from 'react-icons-kit';
 import { eyeOff } from 'react-icons-kit/feather/eyeOff.js';
 import { eye } from 'react-icons-kit/feather/eye.js';
@@ -14,6 +14,24 @@ export default function RegisterContent () {
     const [icon, setIcon] = useState(eyeOff);
 
     const url = "http://localhost:8000/user";
+
+    function isEdge () {
+        return window.navigator.userAgent.indexOf("Edg") > 1;
+    }
+
+    useEffect(() => {
+        const input = document.querySelector("#password-register");
+
+        if (isEdge()) {
+            const span = document.querySelector(".span-eye");
+            const eye = document.querySelector("#icon-eye");
+
+            span.setAttribute("display", "none");
+            eye.style.setProperty("display", "none");
+        } else {
+            input.style.setProperty("padding-right", "40px", "important");
+        }
+    }, []);
 
     function handleToggle () {
         if (type === "password") {
@@ -98,7 +116,7 @@ export default function RegisterContent () {
                                         })}
                                     />
                                     <span className="span-eye" onClick={handleToggle}>
-                                        <Icon icon={icon} size={23} />
+                                        <Icon id="icon-eye" icon={icon} size={23} />
                                     </span>
                                 </div>
                                 {errors.passwordRegistered && <p className="error-message">{errors.passwordRegistered.message}</p>}

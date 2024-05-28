@@ -1,8 +1,7 @@
-/* eslint-disable import/no-anonymous-default-export */
 import { Link, useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { readData } from '../api/routes/routes';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Icon from 'react-icons-kit';
 import { eyeOff } from 'react-icons-kit/feather/eyeOff.js';
 import { eye } from 'react-icons-kit/feather/eye.js';
@@ -17,6 +16,24 @@ export default function LoginContent () {
     const url = "http://localhost:8000/user/login";
 
     const navigate = useNavigate();
+
+    function isEdge () {
+        return window.navigator.userAgent.indexOf("Edg") > 1;
+    }
+
+    useEffect(() => {
+        const input = document.querySelector("#password");
+
+        if (isEdge()) {
+            const span = document.querySelector(".span-eye");
+            const eye = document.querySelector("#icon-eye");
+
+            span.setAttribute("display", "none");
+            eye.style.setProperty("display", "none");
+        } else {
+            input.style.setProperty("padding-right", "40px", "important");
+        }
+    }, []);
 
     function handleToggle () {
         if (type === "password") {
@@ -78,8 +95,11 @@ export default function LoginContent () {
                                         {...register("passwordLogin")}
                                     />
                                     <span className="span-eye" onClick={handleToggle}>
-                                        <Icon icon={icon} size={23} />
+                                        <Icon id="icon-eye" icon={icon} size={23} />
                                     </span>
+                                </div>
+                                <div id="forget-pass">
+                                    <Link to={"/forget-password"}>Esqueci minha senha</Link>
                                 </div>
                             </div>
                             <div>

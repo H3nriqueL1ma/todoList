@@ -1,6 +1,6 @@
 /* eslint-disable import/no-anonymous-default-export */
 export async function createData (url, data) {
-    const user = await fetch(url, {
+    const res = await fetch(url, {
         method: "POST",
         headers: {
             "Content-Type": "application/json"
@@ -11,11 +11,11 @@ export async function createData (url, data) {
     .then(response => { return response; })
     .catch(error => console.log("Error updating data: ", error));
 
-    return user;
+    return res;
 }
 
 export async function readData (url, data) {
-    const user = await fetch(url, {
+    const res = await fetch(url, {
         method: "POST",
         headers: {
             "Content-Type": "application/json"
@@ -26,7 +26,7 @@ export async function readData (url, data) {
     .then(response => { return response; })
     .catch(error => console.log("Error fetching data user: ", error));
 
-    return user;
+    return res;
 }
 
 export async function createTask (url, data) {

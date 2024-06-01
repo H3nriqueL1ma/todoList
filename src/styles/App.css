@@ -121,6 +121,26 @@ body {
 
 #image-login {
   margin: 20px 0 10px;
+  max-height: 169px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#image-login i {
+  font-size: 169px;
+}
+
+.modal-content {
+  background-color: #aa3939;
+}
+
+#modal-text {
+  max-width: 280px;
+}
+
+.btn-close {
+  margin: 0 !important;
 }
 
 #login-div h2 {

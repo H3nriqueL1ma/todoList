@@ -1,19 +1,22 @@
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useForm } from "react-hook-form";
 import { createData } from '../api/routes/routes';
 import { useEffect, useState } from 'react';
 import Icon from 'react-icons-kit';
 import { eyeOff } from 'react-icons-kit/feather/eyeOff.js';
 import { eye } from 'react-icons-kit/feather/eye.js';
+import ErrorModal from './errors/ErrorModal.jsx';
 
 export default function RegisterContent () {
-    const { register, handleSubmit, setError, formState: { errors } } = useForm();
-    const [errorMessage, setErrorMessage] = useState("");
-
+    const { register, handleSubmit, formState: { errors } } = useForm();
+    const [textModal, setTextModal] = useState("");
+    const [showModal, setShowModal] = useState(false);
     const [type, setType] = useState("password");
     const [icon, setIcon] = useState(eyeOff);
 
     const url = "http://localhost:8000/user";
+
+    const navigate = useNavigate();
 
     function isEdge () {
         return window.navigator.userAgent.indexOf("Edg") > 1;
@@ -45,33 +48,47 @@ export default function RegisterContent () {
 
     async function SubmitForm (data) {
         if (data.userNameRegistered === "") {
-            setErrorMessage("Campo 'Usuário' em branco! Digite seu usuário.");
+            setTextModal("Campo 'Usuário' em branco! Digite seu usuário.");
+            setShowModal(true);
         } else if (data.emailRegistered === "") {
-            setErrorMessage("Campo 'E-mail' em branco! Digite seu e-mail.");
+            setTextModal("Campo 'E-mail' em branco! Digite seu e-mail.");
+            setShowModal(true);
         } else if (data.passwordRegistered === "") {
-            setErrorMessage("Campo 'Senha' em branco! Digite sua senha.");
+            setTextModal("Campo 'Senha' em branco! Digite sua senha.");
+            setShowModal(true);
         } else if (data.confirmRegistered === "") {
-            setErrorMessage("Campo 'Confirme sua senha' em branco! Confirme sua senha.");
+            setTextModal("Campo 'Confirme sua senha' em branco! Confirme sua senha.");
+            setShowModal(true);
         } else {
             if (data.confirmRegistered !== data.passwordRegistered) {
-                setError("confirmRegistered", { type: "manual", message: "Senha incompátivel!"});
+                setTextModal("Senha incompátivel!");
+                setShowModal(true);
                 return;
             }
     
-            const result = await createData(url, data);
+            const res = await createData(url, data);
     
-            if (result.message === 409) {
-                setErrorMessage("Usuário ou e-mail já registrado!");
-            } else if (result.message === 404) {
-                setErrorMessage("Domínio de e-mail não existe!");
+            if (res.message === 409) {
+                setTextModal("Usuário ou e-mail já registrado!");
+                setShowModal(true);
+            } else if (res.message === 404) {
+                setTextModal("Domínio de e-mail não existe!");
+                setShowModal(true);
             } else {
-                setErrorMessage("Usuário registrado com sucesso!");
+                navigate("/login");
             }
         }
     }
 
+
     return (
         <>
+            <ErrorModal 
+                show={showModal} 
+                handleClose={ () => setShowModal(false) }
+                text={textModal}
+            />
+
             <div id="login-content" className="text-center">
                 <div id="image-login">
                     <img src="LogoUser.png" alt="logoUser" />
@@ -138,7 +155,6 @@ export default function RegisterContent () {
                                 <button id="submit">Registrar-se</button>
                             </div>
                         </form>
-                        {errorMessage && <p className="error-message">{errorMessage}</p>}
                         <div id="new-user">
                             <Link to={"/login"}>Já tem uma conta?</Link>
                         </div>

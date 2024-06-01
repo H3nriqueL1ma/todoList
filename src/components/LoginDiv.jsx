@@ -5,11 +5,12 @@ import { useEffect, useState } from 'react';
 import Icon from 'react-icons-kit';
 import { eyeOff } from 'react-icons-kit/feather/eyeOff.js';
 import { eye } from 'react-icons-kit/feather/eye.js';
+import ErrorModal from './errors/ErrorModal.jsx';
 
 export default function LoginContent () {
     const { register, handleSubmit } = useForm();
-    const [errorMessage, setErrorMessage] = useState("");
-
+    const [textModal, setTextModal] = useState("");
+    const [showModal, setShowModal] = useState(false);
     const [type, setType] = useState("password");
     const [icon, setIcon] = useState(eyeOff);
 
@@ -47,25 +48,35 @@ export default function LoginContent () {
     
     async function SubmitForm (data) {
         if (data.usernameLogin === "") {
-            setErrorMessage("Campo 'Usuário' em branco! Digite seu usuário.");
+            setTextModal("Campo 'Usuário' em branco! Digite seu usuário.");
+            setShowModal(true);
         } else if (data.passwordLogin === "") {
-            setErrorMessage("Campo 'Senha' em branco! Digite sua senha.");
+            setTextModal("Campo 'Senha' em branco! Digite sua senha.");
+            setShowModal(true);
         } else {
-            const user = await readData(url, data);
+            const res = await readData(url, data);
 
-            if (user.message === 200) {
+            if (res.message === 200) {
                 localStorage.setItem("username", data.usernameLogin);
                 navigate("/home");
-            } else if (user.message === 401) {
-                setErrorMessage("Senha incorreta!");
+            } else if (res.message === 401) {
+                setTextModal("Senha incorreta!")
+                setShowModal(true);
             } else {
-                setErrorMessage("Usuário não registrado!");
+                setTextModal("Usuário não registrado!")
+                setShowModal(true);
             }
         }
     }
 
     return (
         <>
+            <ErrorModal 
+                show={showModal} 
+                handleClose={ () => setShowModal(false) }
+                text={textModal}
+            />
+
             <div id="login-content" className="text-center">
                 <div id="image-login">
                     <img src="LogoUser.png" alt="logoUser" />
@@ -106,7 +117,6 @@ export default function LoginContent () {
                                 <button id="submit">Entrar</button>
                             </div>
                         </form>
-                        {errorMessage && <p className="error-message">{errorMessage}</p>}
                         <div id="new-user">
                             <Link to={"/register"}>Novo Usuário?</Link>
                         </div>

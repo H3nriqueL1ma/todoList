@@ -16,14 +16,14 @@ export function Forget () {
     const url = "http://localhost:8000/user/email-verify";
 
     async function SubmitForm(data) {
-        if (data.emailVerify === "") {
+        if (data.email === "") {
             setTextModal("Campo 'E-mail' em branco! Digite seu e-mail.");
             setShowModal(true);
         } else {
             const res = await readData(url, data);
 
             if (res.message === 409) {
-                localStorage.setItem("email", data.emailVerify);
+                localStorage.setItem("email", data.email);
                 navigate("/forget-password/new-credentials")
             } else {
                 setTextModal("E-mail não existe!");
@@ -55,7 +55,7 @@ export function Forget () {
                                     type="text" 
                                     id="email" placeholder="Seu e-mail" 
                                     autoFocus 
-                                    {...register("emailVerify")}
+                                    {...register("email")}
                                 />
                             </div>
                             <div>
@@ -108,14 +108,14 @@ export function ForgetVerify () {
     }
 
     async function SubmitForm(data) {
-        if (data.newPasswordRegistered === "") {
+        if (data.newPassword === "") {
             setTextModal("Campo 'Nova Senha' em branco! Digite sua senha.");
             setShowModal(true);
-        } else if (data.confirmRegistered === "") {
+        } else if (data.confirm === "") {
             setTextModal("Campo 'Confirme sua senha' em branco! Digite sua senha.");
             setShowModal(true);
         } else {
-            if (data.newPasswordRegistered !== data.confirmRegistered) {
+            if (data.newPassword !== data.confirm) {
                 setTextModal("Senha incompátivel!");
                 setShowModal(true);
                 return;
@@ -124,8 +124,8 @@ export function ForgetVerify () {
             const storedEmail = localStorage.getItem("email");
 
             const newData = {
-                newPasswordRegistered: data.newPasswordRegistered,
-                storedEmail
+                newPass: data.newPassword,
+                email: storedEmail
             }
 
             const res = await createData(url, newData);
@@ -163,7 +163,7 @@ export function ForgetVerify () {
                                         type={type}
                                         id="password-register" 
                                         placeholder="Deve ter no mínimo 7 caracteres" 
-                                        {...register("newPasswordRegistered", {
+                                        {...register("newPassword", {
                                             required: "Nova Senha é obrigatória!",
                                             minLength: { value: 7, message: "Insira uma senha acima de 7 caracteres!" }
                                         })}
@@ -172,7 +172,7 @@ export function ForgetVerify () {
                                         <Icon id="icon-eye" icon={icon} size={23} />
                                     </span>
                                 </div>
-                                {errors.passwordRegistered && <p className="error-message">{errors.passwordRegistered.message}</p>}
+                                {errors.newPassword && <p className="error-message">{errors.newPassword.message}</p>}
                             </div>
                             <div>
                                 <label htmlFor="confirm-password">Confirme sua senha</label><br/>
@@ -180,12 +180,12 @@ export function ForgetVerify () {
                                     type={type} 
                                     id="confirm-password" 
                                     placeholder="Deve ter no mínimo 7 caracteres" 
-                                    {...register("confirmRegistered", {
+                                    {...register("confirm", {
                                         required: "Confirmação de senha é obrigatória!",
                                         minLength: { value: 7, message: "Insira uma senha acima de 7 caracteres!" }
                                     })}
                                 />
-                                {errors.confirmRegistered && <p className="error-message">{errors.confirmRegistered.message}</p>}
+                                {errors.confirm && <p className="error-message">{errors.confirm.message}</p>}
                             </div>
                             <div>
                                 <button id="submit">Atualizar</button>

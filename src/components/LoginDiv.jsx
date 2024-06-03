@@ -47,17 +47,17 @@ export default function LoginContent () {
     }
     
     async function SubmitForm (data) {
-        if (data.usernameLogin === "") {
+        if (data.username === "") {
             setTextModal("Campo 'Usuário' em branco! Digite seu usuário.");
             setShowModal(true);
-        } else if (data.passwordLogin === "") {
+        } else if (data.password === "") {
             setTextModal("Campo 'Senha' em branco! Digite sua senha.");
             setShowModal(true);
         } else {
             const res = await readData(url, data);
 
             if (res.message === 200) {
-                localStorage.setItem("username", data.usernameLogin);
+                localStorage.setItem("username", data.username);
                 navigate("/home");
             } else if (res.message === 401) {
                 setTextModal("Senha incorreta!")
@@ -93,7 +93,7 @@ export default function LoginContent () {
                                     type="text" 
                                     id="user-name" placeholder="Seu usuário" 
                                     autoFocus 
-                                    {...register("usernameLogin")}
+                                    {...register("username")}
                                 />
                             </div>
                             <div>
@@ -103,7 +103,7 @@ export default function LoginContent () {
                                         type={type} 
                                         id="password" 
                                         placeholder="Sua senha" 
-                                        {...register("passwordLogin")}
+                                        {...register("password")}
                                     />
                                     <span className="span-eye" onClick={handleToggle}>
                                         <Icon id="icon-eye" icon={icon} size={23} />

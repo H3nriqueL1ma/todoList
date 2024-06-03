@@ -47,26 +47,32 @@ export default function RegisterContent () {
     }
 
     async function SubmitForm (data) {
-        if (data.userNameRegistered === "") {
+        if (data.username === "") {
             setTextModal("Campo 'Usuário' em branco! Digite seu usuário.");
             setShowModal(true);
-        } else if (data.emailRegistered === "") {
+        } else if (data.email === "") {
             setTextModal("Campo 'E-mail' em branco! Digite seu e-mail.");
             setShowModal(true);
-        } else if (data.passwordRegistered === "") {
+        } else if (data.password === "") {
             setTextModal("Campo 'Senha' em branco! Digite sua senha.");
             setShowModal(true);
-        } else if (data.confirmRegistered === "") {
+        } else if (data.confirm === "") {
             setTextModal("Campo 'Confirme sua senha' em branco! Confirme sua senha.");
             setShowModal(true);
         } else {
-            if (data.confirmRegistered !== data.passwordRegistered) {
+            if (data.confirm !== data.password) {
                 setTextModal("Senha incompátivel!");
                 setShowModal(true);
                 return;
             }
+
+            const newData = {
+                username: data.username,
+                email: data.email,
+                password: data.password
+            }
     
-            const res = await createData(url, data);
+            const res = await createData(url, newData);
     
             if (res.message === 409) {
                 setTextModal("Usuário ou e-mail já registrado!");
@@ -106,7 +112,7 @@ export default function RegisterContent () {
                                     id="user-name-register" 
                                     placeholder="Seu usuário" 
                                     autoFocus 
-                                    {...register("userNameRegistered")}
+                                    {...register("username")}
                                     maxLength={40}
                                 />
                             </div>
@@ -116,7 +122,7 @@ export default function RegisterContent () {
                                     type="text" 
                                     id="email-register" 
                                     placeholder="Seu e-mail" 
-                                    {...register("emailRegistered")}
+                                    {...register("email")}
                                     maxLength={50}
                                 />
                             </div>
@@ -127,7 +133,7 @@ export default function RegisterContent () {
                                         type={type}
                                         id="password-register" 
                                         placeholder="Deve ter no mínimo 7 caracteres" 
-                                        {...register("passwordRegistered", {
+                                        {...register("password", {
                                             required: "Senha é obrigatória!",
                                             minLength: { value: 7, message: "Insira uma senha acima de 7 caracteres!" }
                                         })}
@@ -144,7 +150,7 @@ export default function RegisterContent () {
                                     type={type} 
                                     id="confirm-password" 
                                     placeholder="Deve ter no mínimo 7 caracteres" 
-                                    {...register("confirmRegistered", {
+                                    {...register("confirm", {
                                         required: "Confirmação de senha é obrigatória!",
                                         minLength: { value: 7, message: "Insira uma senha acima de 7 caracteres!" }
                                     })}

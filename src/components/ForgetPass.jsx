@@ -13,9 +13,10 @@ export function Forget () {
     const [textModal, setTextModal] = useState("");
     const [showModal, setShowModal] = useState(false);
     const navigate = useNavigate();
-    const url = "http://localhost:8000/user/email-verify";
 
     async function SubmitForm(data) {
+        const url = `http://localhost:8000/user/email-verify/${data.email}`;
+
         if (data.email === "") {
             setTextModal("Campo 'E-mail' em branco! Digite seu e-mail.");
             setShowModal(true);

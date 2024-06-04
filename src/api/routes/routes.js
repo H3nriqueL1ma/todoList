@@ -41,12 +41,11 @@ export async function createTask (url, data) {
 }
 
 export async function readTasks (url, username) {
-    const tasks = await fetch(url, {
-        method: "POST",
+    const tasks = await fetch(`${url}?username=${username}`, {
+        method: "GET",
         headers: {
             "Content-Type": "application/json"
         },
-        body: JSON.stringify({ username })
     })
     .then(response => response.json())
     .then(response => { return response; })

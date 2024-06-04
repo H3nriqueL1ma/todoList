@@ -85,10 +85,10 @@ export function ScreenHome () {
     const navigate = useNavigate();
     const [username, setUsername] = useState("");
     const { register, handleSubmit } = useForm();
-    const url_create = "http://localhost:8000/user/task";
-    const url_read = "http://localhost:8000/user/task/read-user-tasks";
-    const url_delete = "http://localhost:8000/user/task/delete-user-task";
-    const [tasks, setTasks] = useState([]);
+    const url_create = "http://localhost:8080/user/task";
+    const url_read = "http://localhost:8080/user/task/read-user-tasks";
+    const [tasks, setTasks] = useState({});
+    const [tasksArray, setTasksArray] = useState();
 
     useEffect(() => {
         const storedUsername = localStorage.getItem("username");
@@ -109,16 +109,25 @@ export function ScreenHome () {
  
     async function SubmitTask (data) {
         const taskData = { ...data, username }
+        console.log(taskData)
         await createTask(url_create, taskData);
         await loadTasks(username);
     }
 
     async function loadTasks (username) {
         const userTasks = await readTasks(url_read, username);
-        setTasks(userTasks);
+        
+        if (userTasks === null || userTasks === undefined) {
+            setTasks({});
+        } else {
+            setTasks(userTasks);
+            setTasksArray([tasks.taskId, tasks.taskContent])
+            console.log(tasksArray)
+        }
     }
 
     async function deleteTask (taskID) {
+        const url_delete = `http://localhost:8080/user/task/delete-user-task/${taskID}`;
         await deleteTask_(url_delete, taskID);
         await loadTasks(username);
     }
@@ -147,12 +156,12 @@ export function ScreenHome () {
                 </Row>
                 <Row className="m-0">
                     <div id="tasks" className="m-auto p-3">
-                        <table className="m-auto">
-                            {tasks.map(task => (
-                                <tr key={task.task_id} id="task">
-                                    <td id="text-task">{task.task_content}</td>
+                        <table id="table" className="m-auto">
+                        {tasksArray.map(task => (
+                                <tr key={task.taskId} id="task">
+                                    <td id="text-task">{task.taskContent}</td>
                                     <td>
-                                        <button id="delete" onClick={() => deleteTask(task.task_id)}>
+                                        <button id="delete" onClick={() => deleteTask(task.taskId)}>
                                             <i className="bi bi-trash"></i>
                                         </button>
                                     </td>

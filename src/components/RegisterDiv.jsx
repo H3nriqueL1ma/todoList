@@ -14,7 +14,7 @@ export default function RegisterContent () {
     const [type, setType] = useState("password");
     const [icon, setIcon] = useState(eyeOff);
 
-    const url = "http://localhost:8000/user";
+    const url = "http://localhost:8080/user";
 
     const navigate = useNavigate();
 
@@ -74,10 +74,10 @@ export default function RegisterContent () {
     
             const res = await createData(url, newData);
     
-            if (res.message === 409) {
+            if (res === 409) {
                 setTextModal("Usuário ou e-mail já registrado!");
                 setShowModal(true);
-            } else if (res.message === 404) {
+            } else if (res === 404) {
                 setTextModal("Domínio de e-mail não existe!");
                 setShowModal(true);
             } else {

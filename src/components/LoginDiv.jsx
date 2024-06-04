@@ -14,7 +14,7 @@ export default function LoginContent () {
     const [type, setType] = useState("password");
     const [icon, setIcon] = useState(eyeOff);
 
-    const url = "http://localhost:8000/user/login";
+    const url = "http://localhost:8080/user/login";
 
     const navigate = useNavigate();
 
@@ -56,10 +56,10 @@ export default function LoginContent () {
         } else {
             const res = await readData(url, data);
 
-            if (res.message === 200) {
+            if (res === 200) {
                 localStorage.setItem("username", data.username);
                 navigate("/home");
-            } else if (res.message === 401) {
+            } else if (res === 401) {
                 setTextModal("Senha incorreta!")
                 setShowModal(true);
             } else {

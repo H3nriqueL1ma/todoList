@@ -1,4 +1,3 @@
-/* eslint-disable jsx-a11y/alt-text */
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable import/no-anonymous-default-export */
 import Container from 'react-bootstrap/Container';
@@ -10,7 +9,8 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { createTask, deleteTask_, readTasks } from '../api/routes/routes';
 import { useEffect, useState } from 'react';
-import { Forget, ForgetVerify } from './ForgetPass';
+import Forget from './ForgetPass';
+import { ForgetVerify } from './ForgetPass';
 
 export function Screen () {
     return (
@@ -186,7 +186,7 @@ export function ScreenForget () {
                     <Col>
                         <div id="title" className="text-start p-5">
                             <h1>Bem-vindo ao ToDo List!</h1>
-                            <h5>Mude a sua senha.</h5>
+                            <h5>Crie sua conta de Usuário.</h5>
                         </div>
                     </Col>
                 </Row>
@@ -214,7 +214,5 @@ export function ScreenForgetVerify () {
         </>
     );
 }
-
-
 
 export default { Screen, ScreenLogin, ScreenRegister, ScreenHome, ScreenForget, ScreenForgetVerify }

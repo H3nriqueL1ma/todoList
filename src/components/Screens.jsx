@@ -1,3 +1,4 @@
+/* eslint-disable array-callback-return */
 /* eslint-disable jsx-a11y/alt-text */
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable import/no-anonymous-default-export */
@@ -151,18 +152,24 @@ export function ScreenHome () {
                 <Row className="m-0">
                     <div id="tasks" className="m-auto p-3">
                         <table id="table" className="m-auto">
-                        {/* <tr key={task.taskId} id="task">
-                                <td id="text-task">{task.taskContent}</td>
-                                <td>
-                                    <button id="delete" onClick={() => deleteTask(task.taskId)}>
-                                        <i className="bi bi-trash"></i>
-                                    </button>
-                                </td>
-                            </tr>
-
-                        {tasks.map(task => {
-                            console.log(task)
-                        })} */}
+                        {tasks === undefined ? (
+                            <p className="text-center">Nenhuma tarefa encontrada</p>
+                        ) : (
+                            <table id="table" className="m-auto">
+                                <tbody>
+                                    {tasks.map(task => (
+                                        <tr key={task.taskId} id="task">
+                                            <td id="text-task">{task.taskContent}</td>
+                                            <td>
+                                                <button id="delete" onClick={() => deleteTask(task.taskId)}>
+                                                    <i className="bi bi-trash"></i>
+                                                </button>
+                                            </td>
+                                        </tr>
+                                    ))}
+                                </tbody>
+                            </table>
+                        )}
                         </table>
                     </div>
                 </Row>

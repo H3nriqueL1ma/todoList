@@ -87,18 +87,20 @@ export function ScreenHome () {
     const { register, handleSubmit } = useForm();
     const url_create = "http://localhost:8080/user/task";
     const url_read = "http://localhost:8080/user/task/read-user-tasks";
-    const [tasks, setTasks] = useState({});
-    const [tasksArray, setTasksArray] = useState();
+    const [tasks, setTasks] = useState([]);
 
     useEffect(() => {
         const storedUsername = localStorage.getItem("username");
         if (storedUsername) {
             setUsername(storedUsername);
-            loadTasks(storedUsername)
+            
+            if (tasks.length === 0) {
+                loadTasks(storedUsername);
+            }
         } else {
             navigate("/");
         }
-    }, [loadTasks, navigate]);
+    }, []);
 
     function handleTemp () {
         localStorage.clear();
@@ -109,21 +111,13 @@ export function ScreenHome () {
  
     async function SubmitTask (data) {
         const taskData = { ...data, username }
-        console.log(taskData)
         await createTask(url_create, taskData);
         await loadTasks(username);
     }
 
     async function loadTasks (username) {
         const userTasks = await readTasks(url_read, username);
-        
-        if (userTasks === null || userTasks === undefined) {
-            setTasks({});
-        } else {
-            setTasks(userTasks);
-            setTasksArray([tasks.taskId, tasks.taskContent])
-            console.log(tasksArray)
-        }
+        setTasks(userTasks);
     }
 
     async function deleteTask (taskID) {
@@ -157,16 +151,18 @@ export function ScreenHome () {
                 <Row className="m-0">
                     <div id="tasks" className="m-auto p-3">
                         <table id="table" className="m-auto">
-                        {tasksArray.map(task => (
-                                <tr key={task.taskId} id="task">
-                                    <td id="text-task">{task.taskContent}</td>
-                                    <td>
-                                        <button id="delete" onClick={() => deleteTask(task.taskId)}>
-                                            <i className="bi bi-trash"></i>
-                                        </button>
-                                    </td>
-                                </tr>
-                            ))}
+                        {/* <tr key={task.taskId} id="task">
+                                <td id="text-task">{task.taskContent}</td>
+                                <td>
+                                    <button id="delete" onClick={() => deleteTask(task.taskId)}>
+                                        <i className="bi bi-trash"></i>
+                                    </button>
+                                </td>
+                            </tr>
+
+                        {tasks.map(task => {
+                            console.log(task)
+                        })} */}
                         </table>
                     </div>
                 </Row>

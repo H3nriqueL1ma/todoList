@@ -65,9 +65,13 @@ export async function deleteTask_ (url, taskID) {
     .catch(error => console.log("Error fetching delete data task: ", error))
 }
 
-export async function statusTask (url) {
-    const statusTask = fetch(url, {
-        method: "POST"
+export async function readStatusTask (url, taskID, status) {
+    const statusTask = await fetch(url, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ taskID, status })
     })
     .then(response => response.json())
     .then(response => { return response; })
@@ -76,4 +80,4 @@ export async function statusTask (url) {
     return statusTask;
 }
 
-export default { createData, readData, createTask, readTasks, deleteTask_ };
+export default { createData, readData, createTask, readTasks, deleteTask_, readStatusTask };

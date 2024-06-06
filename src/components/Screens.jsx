@@ -9,7 +9,7 @@ import LoginContent from './LoginDiv';
 import RegisterContent from './RegisterDiv';
 import { Link, useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
-import { createTask, deleteTask_, readTasks } from '../api/routes/routes';
+import { createTask, deleteTask_, readStatusTask, readTasks } from '../api/routes/routes';
 import { useEffect, useState } from 'react';
 import { Forget, ForgetVerify } from './ForgetPass';
 
@@ -95,7 +95,7 @@ export function ScreenHome () {
         if (storedUsername) {
             setUsername(storedUsername);
             
-            if (!tasks || tasks.length === 0) {
+            if (!tasks) {
                 loadTasks(storedUsername);
             }
         } else {
@@ -145,12 +145,13 @@ export function ScreenHome () {
                 addClass(deleteTaskButton, "deleted");
             });
         }
-    }, [tasks]);
+    }, [tasks.length]);
 
-    function handleStatusClick(taskId, event) {
+    async function handleStatusClick(taskId, event, task) {
         const statusTaskButtonI = event.currentTarget.querySelector("i");
         const classOne = "bi-check-square";
         const classTwo = "bi-check-square-fill";
+        const url_read_status = "http://localhost:8080/user/task/read-user-tasks/status"
         let statusTask;
 
         if (statusTaskButtonI && classOne && classTwo) {
@@ -165,7 +166,16 @@ export function ScreenHome () {
             }
         }
 
-        console.log(taskId + " " + statusTask);
+        const updatedTasks = tasks.map(t => {
+            if (t.taskId === taskId) {
+                return { ...t, completed: statusTask }
+            } else {
+                return t;
+            }
+        });
+        setTasks(updatedTasks);
+
+        await readStatusTask(url_read_status, taskId, statusTask);
     }
 
     function handleTemp () {
@@ -183,7 +193,7 @@ export function ScreenHome () {
 
     async function loadTasks (username) {
         const userTasks = await readTasks(url_read, username);
-        setTasks(userTasks);
+        setTasks(userTasks || []);
     }
 
     async function deleteTask (taskID) {
@@ -217,22 +227,30 @@ export function ScreenHome () {
                 <Row className="m-0 d-block">
                     <div id="tasks" className="m-auto p-3">
                         <table id="table" className="m-auto">
-                            {tasks === undefined ? (
+                            {tasks.length === 0 ? (
                                 <p className="text-center">Nenhuma tarefa encontrada</p>
                             ) : (
                                 <tbody>
                                     {tasks.map(task => (
                                         <tr key={task.taskId} id="task">
                                             <td id="status-content">
-                                                <button id="status" onClick={(event) => handleStatusClick(task.taskId, event)}>
-                                                    <i id="status-i" class="bi bi-check-square"></i>
+                                                <button 
+                                                    id="status" 
+                                                    onClick={(event) => handleStatusClick(task.taskId, event, task.completed)}
+                                                >
+                                                    <i id="status-i" className="bi bi-check-square"></i>
                                                 </button>
                                             </td>
-                                            <td id="text-task">
+                                            <td id="text-task" style={ {textDecoration: !task.completed ? "none" : "line-through"} }>
                                                 {task.taskContent}
                                             </td>
                                             <td id="delete-content">
-                                                <button id="delete" onClick={() => deleteTask(task.taskId)}>
+                                                <button 
+                                                    id="delete" 
+                                                    onClick={() => deleteTask(task.taskId)} 
+                                                    disabled={task.completed}
+                                                    style={ {visibility: !task.completed ? "visible" : "hidden"} }
+                                                >
                                                     <i className="bi bi-trash"></i>
                                                 </button>
                                             </td>

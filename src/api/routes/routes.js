@@ -37,7 +37,7 @@ export async function createTask (url, data) {
         },
         body: JSON.stringify(data)
     })
-    .catch(error => console.log("Error fetching create data task: ", error))
+    .catch(error => console.log("Error fetching create data task: ", error));
 }
 
 export async function readTasks (url, username) {
@@ -49,7 +49,7 @@ export async function readTasks (url, username) {
     })
     .then(response => response.json())
     .then(response => { return response; })
-    .catch(error => console.log("Error fetching read data task: ", error))
+    .catch(error => console.log("Error fetching read data task: ", error));
 
     return tasks;
 }
@@ -63,6 +63,17 @@ export async function deleteTask_ (url, taskID) {
         body: JSON.stringify({ taskID })
     })
     .catch(error => console.log("Error fetching delete data task: ", error))
+}
+
+export async function statusTask (url) {
+    const statusTask = fetch(url, {
+        method: "POST"
+    })
+    .then(response => response.json())
+    .then(response => { return response; })
+    .catch(error => console.log("Error fetching read status task: ", error));
+
+    return statusTask;
 }
 
 export default { createData, readData, createTask, readTasks, deleteTask_ };

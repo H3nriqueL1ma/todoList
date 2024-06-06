@@ -95,13 +95,78 @@ export function ScreenHome () {
         if (storedUsername) {
             setUsername(storedUsername);
             
-            if (tasks.length === 0) {
+            if (!tasks || tasks.length === 0) {
                 loadTasks(storedUsername);
             }
         } else {
             navigate("/");
         }
-    }, []);
+
+        const allTasksButton = document.querySelector("#all-tasks");
+        const activeTasksButton = document.querySelector("#active-tasks");
+        const completeTasksButton = document.querySelector("#complete-tasks");
+
+        function addClass (element, className) {
+            if (element && className) {
+                element.classList.add(className);
+            }
+        }
+
+        function removeClass (element, className) {
+            if (element && className) {
+                element.classList.remove(className);
+            }
+        }
+
+        if (allTasksButton && activeTasksButton && completeTasksButton) {
+            allTasksButton.addEventListener("click", () => {
+                removeClass(activeTasksButton, "selected");
+                removeClass(completeTasksButton, "selected");
+                addClass(allTasksButton, "selected");
+            });
+
+            activeTasksButton.addEventListener("click", () => {
+                removeClass(allTasksButton, "selected");
+                removeClass(completeTasksButton, "selected");
+                addClass(activeTasksButton, "selected");
+            });
+
+            completeTasksButton.addEventListener("click", () => {
+                removeClass(activeTasksButton, "selected");
+                removeClass(allTasksButton, "selected");
+                addClass(completeTasksButton, "selected");
+            });
+        }
+
+        const deleteTaskButton = document.querySelector("#delete");
+
+        if (deleteTaskButton) {
+            deleteTaskButton.addEventListener("click", () => {
+                addClass(deleteTaskButton, "deleted");
+            });
+        }
+    }, [tasks]);
+
+    function handleStatusClick(taskId, event) {
+        const statusTaskButtonI = event.currentTarget.querySelector("i");
+        const classOne = "bi-check-square";
+        const classTwo = "bi-check-square-fill";
+        let statusTask;
+
+        if (statusTaskButtonI && classOne && classTwo) {
+            if (statusTaskButtonI.classList.contains(classOne)) {
+                statusTaskButtonI.classList.remove(classOne);
+                statusTaskButtonI.classList.add(classTwo);
+                statusTask = true;
+            } else {
+                statusTaskButtonI.classList.remove(classTwo);
+                statusTaskButtonI.classList.add(classOne);
+                statusTask = false;
+            }
+        }
+
+        console.log(taskId + " " + statusTask);
+    }
 
     function handleTemp () {
         localStorage.clear();
@@ -149,18 +214,24 @@ export function ScreenHome () {
                         </div>
                     </Col>
                 </Row>
-                <Row className="m-0">
+                <Row className="m-0 d-block">
                     <div id="tasks" className="m-auto p-3">
                         <table id="table" className="m-auto">
-                        {tasks === undefined ? (
-                            <p className="text-center">Nenhuma tarefa encontrada</p>
-                        ) : (
-                            <table id="table" className="m-auto">
+                            {tasks === undefined ? (
+                                <p className="text-center">Nenhuma tarefa encontrada</p>
+                            ) : (
                                 <tbody>
                                     {tasks.map(task => (
                                         <tr key={task.taskId} id="task">
-                                            <td id="text-task">{task.taskContent}</td>
-                                            <td>
+                                            <td id="status-content">
+                                                <button id="status" onClick={(event) => handleStatusClick(task.taskId, event)}>
+                                                    <i id="status-i" class="bi bi-check-square"></i>
+                                                </button>
+                                            </td>
+                                            <td id="text-task">
+                                                {task.taskContent}
+                                            </td>
+                                            <td id="delete-content">
                                                 <button id="delete" onClick={() => deleteTask(task.taskId)}>
                                                     <i className="bi bi-trash"></i>
                                                 </button>
@@ -168,10 +239,19 @@ export function ScreenHome () {
                                         </tr>
                                     ))}
                                 </tbody>
-                            </table>
-                        )}
+                            )}
                         </table>
                     </div>
+                    <Row className="m-auto p-3" id="tasks-options">
+                        <Col xs={4}>
+                            <p className="m-0">X Itens restantes</p>
+                        </Col>
+                        <Col id="tasks-types" xs={8}>
+                            <button id="all-tasks" className="selected">Todos</button>
+                            <button id="active-tasks">Ativos</button>   
+                            <button id="complete-tasks">Completados</button>       
+                        </Col>
+                    </Row>
                 </Row>
             </Container>
         </>

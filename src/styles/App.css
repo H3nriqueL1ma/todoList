@@ -360,6 +360,7 @@ td {
   border-top: 1px solid white;
   border-bottom-left-radius: 10px;
   border-bottom-right-radius: 10px;
+  margin-bottom: 2% !important;
 }
 
 #tasks-types button {
@@ -377,5 +378,13 @@ td {
 }
 
 #tasks-types button + button {
+  margin-left: 10px;
+}
+
+#animations {
+  height: 100%;
+}
+
+#loading-animation + #loading-animation {
   margin-left: 10px;
 }

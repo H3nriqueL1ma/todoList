@@ -5,7 +5,7 @@ import { useEffect, useState } from 'react';
 import Icon from 'react-icons-kit';
 import { eyeOff } from 'react-icons-kit/feather/eyeOff.js';
 import { eye } from 'react-icons-kit/feather/eye.js';
-import ErrorModal from './errors/ErrorModal.jsx';
+import ErrorModal from './errorsAndLoadings/ErrorModal.jsx';
 
 export default function RegisterContent () {
     const { register, handleSubmit, formState: { errors } } = useForm();

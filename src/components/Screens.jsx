@@ -12,6 +12,15 @@ import { useForm } from 'react-hook-form';
 import { createTask, deleteTask_, readStatusTask, readTasks } from '../api/routes/routes';
 import { useEffect, useState } from 'react';
 import { Forget, ForgetVerify } from './ForgetPass';
+import setButtonClasses from './functionsForHome/functionsHome';
+import Loading from './errorsAndLoadings/LoadingAnimation';
+
+const URL_CREATE = "http://localhost:8080/user/task";
+const URL_READ = "http://localhost:8080/user/task/read-user-tasks";
+const URL_READ_ACTIVE = "http://localhost:8080/user/task/read-user-tasks/active";
+const URL_READ_COMPLETE = "http://localhost:8080/user/task/read-user-tasks/complete";
+const URL_READ_STATUS = "http://localhost:8080/user/task/read-user-tasks/status";
+
 
 export function Screen () {
     return (
@@ -85,17 +94,20 @@ export function ScreenRegister () {
 export function ScreenHome () {
     const navigate = useNavigate();
     const [username, setUsername] = useState("");
-    const { register, handleSubmit } = useForm();
-    const url_create = "http://localhost:8080/user/task";
-    const url_read = "http://localhost:8080/user/task/read-user-tasks";
     const [tasks, setTasks] = useState([]);
+    const [isLoading, setIsLoading] = useState(true);
+    const { register, handleSubmit } = useForm();
+    let tasksQnt = tasks.filter(item => item.completed === false).length;
 
     useEffect(() => {
         const storedUsername = localStorage.getItem("username");
         if (storedUsername) {
             setUsername(storedUsername);
-            
-            if (!tasks) {
+            const storedTasks = JSON.parse(localStorage.getItem("tasks"));
+            if (storedTasks) {
+                setTasks(storedTasks);
+                setIsLoading(false);
+            } else {
                 loadTasks(storedUsername);
             }
         } else {
@@ -106,52 +118,40 @@ export function ScreenHome () {
         const activeTasksButton = document.querySelector("#active-tasks");
         const completeTasksButton = document.querySelector("#complete-tasks");
 
-        function addClass (element, className) {
-            if (element && className) {
-                element.classList.add(className);
-            }
+        function handleAllTasksClick() {
+            setButtonClasses(allTasksButton, [activeTasksButton, completeTasksButton]);
+            loadTasks(storedUsername);
         }
 
-        function removeClass (element, className) {
-            if (element && className) {
-                element.classList.remove(className);
-            }
+        function handleActiveTasksClick() {
+            setButtonClasses(activeTasksButton, [allTasksButton, completeTasksButton]);
+            loadActiveTasks(storedUsername);
+        }
+
+        function handleCompleteTasksClick() {
+            setButtonClasses(completeTasksButton, [allTasksButton, activeTasksButton]);
+            loadCompleteTasks(storedUsername);
         }
 
         if (allTasksButton && activeTasksButton && completeTasksButton) {
-            allTasksButton.addEventListener("click", () => {
-                removeClass(activeTasksButton, "selected");
-                removeClass(completeTasksButton, "selected");
-                addClass(allTasksButton, "selected");
-            });
-
-            activeTasksButton.addEventListener("click", () => {
-                removeClass(allTasksButton, "selected");
-                removeClass(completeTasksButton, "selected");
-                addClass(activeTasksButton, "selected");
-            });
-
-            completeTasksButton.addEventListener("click", () => {
-                removeClass(activeTasksButton, "selected");
-                removeClass(allTasksButton, "selected");
-                addClass(completeTasksButton, "selected");
-            });
+            allTasksButton.addEventListener("click", handleAllTasksClick);
+            activeTasksButton.addEventListener("click", handleActiveTasksClick);
+            completeTasksButton.addEventListener("click", handleCompleteTasksClick);
         }
 
-        const deleteTaskButton = document.querySelector("#delete");
-
-        if (deleteTaskButton) {
-            deleteTaskButton.addEventListener("click", () => {
-                addClass(deleteTaskButton, "deleted");
-            });
+        return () => {
+            if (allTasksButton && activeTasksButton && completeTasksButton) {
+                allTasksButton.removeEventListener("click", handleAllTasksClick);
+                activeTasksButton.removeEventListener("click", handleActiveTasksClick);
+                completeTasksButton.removeEventListener("click", handleCompleteTasksClick);
+            }
         }
-    }, [tasks.length]);
+    }, [navigate]);
 
-    async function handleStatusClick(taskId, event, task) {
+    async function handleStatusClick(taskId, event) {
         const statusTaskButtonI = event.currentTarget.querySelector("i");
         const classOne = "bi-check-square";
         const classTwo = "bi-check-square-fill";
-        const url_read_status = "http://localhost:8080/user/task/read-user-tasks/status"
         let statusTask;
 
         if (statusTaskButtonI && classOne && classTwo) {
@@ -164,18 +164,24 @@ export function ScreenHome () {
                 statusTaskButtonI.classList.add(classOne);
                 statusTask = false;
             }
-        }
 
-        const updatedTasks = tasks.map(t => {
-            if (t.taskId === taskId) {
-                return { ...t, completed: statusTask }
-            } else {
-                return t;
+            const updatedTasks = tasks.map(t => {
+                if (t.taskId === taskId) {
+                    return { ...t, completed: statusTask }
+                } else {
+                    return t;
+                }
+            });
+    
+            localStorage.setItem("tasks", JSON.stringify(updatedTasks));
+            setTasks(updatedTasks);
+    
+            try {
+                await readStatusTask(URL_READ_STATUS, taskId, statusTask);
+            } catch (error) {
+                console.error("Failed to update task status: ", error);
             }
-        });
-        setTasks(updatedTasks);
-
-        await readStatusTask(url_read_status, taskId, statusTask);
+        }
     }
 
     function handleTemp () {
@@ -187,19 +193,58 @@ export function ScreenHome () {
  
     async function SubmitTask (data) {
         const taskData = { ...data, username }
-        await createTask(url_create, taskData);
-        await loadTasks(username);
+        try {
+            await createTask(URL_CREATE, taskData);
+            await loadTasks(username);
+        } catch (error) {
+            console.error('Failed to submit task:', error);
+        }
     }
 
     async function loadTasks (username) {
-        const userTasks = await readTasks(url_read, username);
-        setTasks(userTasks || []);
+        setIsLoading(true);
+        try {
+            const userTasks = await readTasks(URL_READ, username);
+            setTasks(userTasks || []);
+        } catch (error) {
+            console.error('Failed to load tasks:', error);
+        } finally {
+            setIsLoading(false);
+        }
+    }
+
+    async function loadActiveTasks (username) {
+        setIsLoading(true);
+        try {
+            const userTasks = await readTasks(URL_READ_ACTIVE, username);
+            setTasks(userTasks || []);
+        } catch (error) {
+            console.error("Failed to load active tasks: ", error);
+        } finally {
+            setIsLoading(false);
+        }
+    }
+
+    async function loadCompleteTasks (username) {
+        setIsLoading(true);
+        try {
+            const userTasks = await readTasks(URL_READ_COMPLETE, username);
+            setTasks(userTasks || []);
+        } catch (error) {
+            console.error("Failed to load complete tasks: ", error);
+        } finally {
+            setIsLoading(false);
+        }
     }
 
     async function deleteTask (taskID) {
         const url_delete = `http://localhost:8080/user/task/delete-user-task/${taskID}`;
-        await deleteTask_(url_delete, taskID);
-        await loadTasks(username);
+        try {
+            await deleteTask_(url_delete, taskID);
+            await loadTasks(username);
+        } catch (error) {
+            console.error('Failed to delete task:', error);
+        }
     }
 
     return (
@@ -225,44 +270,50 @@ export function ScreenHome () {
                     </Col>
                 </Row>
                 <Row className="m-0 d-block">
+
+                    
                     <div id="tasks" className="m-auto p-3">
-                        <table id="table" className="m-auto">
-                            {tasks.length === 0 ? (
-                                <p className="text-center">Nenhuma tarefa encontrada</p>
-                            ) : (
-                                <tbody>
-                                    {tasks.map(task => (
-                                        <tr key={task.taskId} id="task">
-                                            <td id="status-content">
-                                                <button 
-                                                    id="status" 
-                                                    onClick={(event) => handleStatusClick(task.taskId, event, task.completed)}
-                                                >
-                                                    <i id="status-i" className="bi bi-check-square"></i>
-                                                </button>
-                                            </td>
-                                            <td id="text-task" style={ {textDecoration: !task.completed ? "none" : "line-through"} }>
-                                                {task.taskContent}
-                                            </td>
-                                            <td id="delete-content">
-                                                <button 
-                                                    id="delete" 
-                                                    onClick={() => deleteTask(task.taskId)} 
-                                                    disabled={task.completed}
-                                                    style={ {visibility: !task.completed ? "visible" : "hidden"} }
-                                                >
-                                                    <i className="bi bi-trash"></i>
-                                                </button>
-                                            </td>
-                                        </tr>
-                                    ))}
-                                </tbody>
-                            )}
-                        </table>
+                        {isLoading ? (
+                            <Loading/>
+                        ) : (
+                            <table id="table" className="m-auto">
+                                {tasks.length === 0 ? (
+                                    <p className="text-center">Nenhuma tarefa encontrada</p>
+                                ) : (
+                                    <tbody>
+                                        {tasks.map(task => (
+                                            <tr key={task.taskId} id="task">
+                                                <td id="status-content">
+                                                    <button 
+                                                        id="status" 
+                                                        onClick={(event) => handleStatusClick(task.taskId, event)}
+                                                    >
+                                                        <i id="status-i" className={`bi ${task.completed ? 'bi-check-square-fill' : 'bi-check-square'}`}></i>
+                                                    </button>
+                                                </td>
+                                                <td id="text-task" style={ {textDecoration: !task.completed ? "none" : "line-through"} }>
+                                                    {task.taskContent}
+                                                </td>
+                                                <td id="delete-content">
+                                                    <button 
+                                                        id="delete" 
+                                                        onClick={() => deleteTask(task.taskId)} 
+                                                        disabled={task.completed}
+                                                        style={ {visibility: !task.completed ? "visible" : "hidden"} }
+                                                    >
+                                                        <i className="bi bi-trash"></i>
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                        ))}
+                                    </tbody>
+                                )}
+                            </table> 
+                        )}
                     </div>
                     <Row className="m-auto p-3" id="tasks-options">
                         <Col xs={4}>
-                            <p className="m-0">X Itens restantes</p>
+                            <p className="m-0">{tasksQnt} Itens restantes</p>
                         </Col>
                         <Col id="tasks-types" xs={8}>
                             <button id="all-tasks" className="selected">Todos</button>

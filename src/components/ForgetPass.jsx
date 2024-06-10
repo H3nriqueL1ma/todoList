@@ -1,7 +1,7 @@
 /* eslint-disable import/no-anonymous-default-export */
 import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
-import ErrorModal from './errors/ErrorModal.jsx';
+import ErrorModal from './errorsAndLoadings/ErrorModal.jsx';
 import { createData, readData } from "../api/routes/routes.js";
 import { useNavigate } from "react-router-dom";
 import { eyeOff } from 'react-icons-kit/feather/eyeOff.js';

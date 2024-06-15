@@ -6,6 +6,7 @@ import Icon from 'react-icons-kit';
 import { eyeOff } from 'react-icons-kit/feather/eyeOff.js';
 import { eye } from 'react-icons-kit/feather/eye.js';
 import ErrorModal from './errorsAndLoadings/ErrorModal.jsx';
+import { encodeCredentials } from './functionsForHome/functionsHome.js';
 
 export default function LoginContent () {
     const { register, handleSubmit } = useForm();
@@ -57,6 +58,8 @@ export default function LoginContent () {
             const res = await readData(url, data);
 
             if (res === 200) {
+                const encodedCredentials = encodeCredentials(data.username, data.password);
+                localStorage.setItem("credentials", encodedCredentials);
                 localStorage.setItem("username", data.username);
                 navigate("/home");
             } else if (res === 401) {

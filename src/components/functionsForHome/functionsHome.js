@@ -4,4 +4,8 @@ export function setButtonClasses (activeButton, inactiveButtons) {
     inactiveButtons.forEach(button => button.classList.remove("selected"));
 }
 
-export default setButtonClasses; 
+export function encodeCredentials(username, password) {
+    return btoa(`${username}:${password}`);
+}
+
+export default { setButtonClasses, encodeCredentials }; 

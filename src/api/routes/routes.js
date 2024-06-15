@@ -41,10 +41,12 @@ export async function createTask (url, data) {
 }
 
 export async function readTasks (url, username) {
+    const credentials = localStorage.getItem("credentials");
+
     const tasks = await fetch(`${url}?username=${username}`, {
         method: "GET",
         headers: {
-            "Content-Type": "application/json"
+            "Authorization": `Basic ${credentials}`
         },
     })
     .then(response => response.json())

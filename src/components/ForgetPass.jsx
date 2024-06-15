@@ -23,7 +23,7 @@ export function Forget () {
         } else {
             const res = await readData(url, data);
 
-            if (res.message === 200) {
+            if (res === 200) {
                 localStorage.setItem("email", data.email);
                 navigate("/forget-password/new-credentials")
             } else {

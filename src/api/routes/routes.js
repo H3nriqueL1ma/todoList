@@ -17,7 +17,9 @@ export async function createData (url, data) {
 export async function readData (url, data = {}) {
     let res;
     const verifyObject = Object.keys(data).length;
-    
+    console.log(data);
+    console.log(verifyObject);
+
     if (verifyObject === 0) {
         const credentials = localStorage.getItem("credentials");
         res = await fetch(url, {

@@ -63,10 +63,7 @@ export default function LoginContent () {
                 localStorage.setItem("username", data.username);
                 navigate("/home");
             } else if (res === 401 || res.status === 401) {
-                setTextModal("Senha incorreta!")
-                setShowModal(true);
-            } else {
-                setTextModal("Usuário não registrado!")
+                setTextModal("Senha incorreta ou Usuário não registrado!")
                 setShowModal(true);
             }
         }

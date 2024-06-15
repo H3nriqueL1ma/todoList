@@ -42,8 +42,7 @@ export async function readData (url, data = {}) {
         .then(response => { return response; })
         .catch(error => console.log("Error fetching data user: ", error));
     }
-
-    console.log(res);
+    
     return res;
 }
 

@@ -20,7 +20,8 @@ export async function readData (url, data) {
         headers: {
             "Content-Type": "application/json"
         },
-        body: JSON.stringify(data)
+        body: JSON.stringify(data),
+        credentials: "include"
     })
     .then(response => response.json())
     .then(response => { return response; })

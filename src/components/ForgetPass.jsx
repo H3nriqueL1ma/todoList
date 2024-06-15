@@ -131,7 +131,7 @@ export function ForgetVerify () {
 
             const res = await createData(url, newData);
 
-            if (res.message === 200) {
+            if (res === 200) {
                 navigate("/login");
             } else {
                 setTextModal("E-mail não encontrado!");

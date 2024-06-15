@@ -12,7 +12,7 @@ import { useForm } from 'react-hook-form';
 import { createTask, deleteTask_, readStatusTask, readTasks } from '../api/routes/routes';
 import { useEffect, useState } from 'react';
 import { Forget, ForgetVerify } from './ForgetPass';
-import setButtonClasses from './functionsForHome/functionsHome';
+import { setButtonClasses } from './functionsForHome/functionsHome';
 import Loading from './errorsAndLoadings/LoadingAnimation';
 
 const URL_CREATE = "http://localhost:8080/user/task";

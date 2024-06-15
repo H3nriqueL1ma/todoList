@@ -55,14 +55,14 @@ export default function LoginContent () {
             setTextModal("Campo 'Senha' em branco! Digite sua senha.");
             setShowModal(true);
         } else {
-            const res = await readData(url, data);
+            const encodedCredentials = encodeCredentials(data.username, data.password);
+            localStorage.setItem("credentials", encodedCredentials);
+            const res = await readData(url);
 
             if (res === 200) {
-                const encodedCredentials = encodeCredentials(data.username, data.password);
-                localStorage.setItem("credentials", encodedCredentials);
                 localStorage.setItem("username", data.username);
                 navigate("/home");
-            } else if (res === 401) {
+            } else if (res === 401 || res.status === 401) {
                 setTextModal("Senha incorreta!")
                 setShowModal(true);
             } else {

@@ -14,18 +14,34 @@ export async function createData (url, data) {
     return res;
 }
 
-export async function readData (url, data) {
-    const res = await fetch(url, {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json"
-        },
-        body: JSON.stringify(data),
-        credentials: "include"
-    })
-    .then(response => response.json())
-    .then(response => { return response; })
-    .catch(error => console.log("Error fetching data user: ", error));
+export async function readData (url, data = {}) {
+    let res;
+    const verifyObject = Object.keys(data).length;
+    
+    if (verifyObject === 0) {
+        const credentials = localStorage.getItem("credentials");
+        res = await fetch(url, {
+            method: "POST",
+            headers: {
+                "Authorization": `Basic ${credentials}`
+            }
+        })
+        .then(response => response.json())
+        .then(response => { return response; })
+        .catch(error => console.log("Error fetching data user: ", error));
+    } else {
+        res = await fetch(url, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(data),
+            credentials: "include"
+        })
+        .then(response => response.json())
+        .then(response => { return response; })
+        .catch(error => console.log("Error fetching data user: ", error));
+    }
 
     return res;
 }

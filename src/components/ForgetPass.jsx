@@ -78,7 +78,7 @@ export function ForgetVerify () {
     const [icon, setIcon] = useState(eyeOff);
 
     const navigate = useNavigate();
-    const url = "http://localhost:8000/user/reset-pass";
+    const url = "http://localhost:8080/user/reset-pass";
 
     function isEdge () {
         return window.navigator.userAgent.indexOf("Edg") > 1;

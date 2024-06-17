@@ -15,7 +15,7 @@ export function Forget () {
     const navigate = useNavigate();
 
     async function SubmitForm(data) {
-        const url = `http://localhost:8080/user/email-verify/${data.email}`;
+        const url = `https://rest-api-spring-postgres-modular.onrender.com/user/email-verify/${data.email}`;
 
         if (data.email === "") {
             setTextModal("Campo 'E-mail' em branco! Digite seu e-mail.");
@@ -78,7 +78,7 @@ export function ForgetVerify () {
     const [icon, setIcon] = useState(eyeOff);
 
     const navigate = useNavigate();
-    const url = "http://localhost:8080/user/reset-pass";
+    const url = "https://rest-api-spring-postgres-modular.onrender.com/user/reset-pass";
 
     function isEdge () {
         return window.navigator.userAgent.indexOf("Edg") > 1;

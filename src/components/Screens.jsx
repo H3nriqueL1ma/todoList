@@ -15,11 +15,11 @@ import { Forget, ForgetVerify } from './ForgetPass';
 import { setButtonClasses } from './functionsForHome/functionsHome';
 import Loading from './errorsAndLoadings/LoadingAnimation';
 
-const URL_CREATE = "http://localhost:8080/user/task";
-const URL_READ = "http://localhost:8080/user/task/read-user-tasks";
-const URL_READ_ACTIVE = "http://localhost:8080/user/task/read-user-tasks/active";
-const URL_READ_COMPLETE = "http://localhost:8080/user/task/read-user-tasks/complete";
-const URL_READ_STATUS = "http://localhost:8080/user/task/read-user-tasks/status";
+const URL_CREATE = "https://rest-api-spring-postgres-modular.onrender.com/user/task";
+const URL_READ = "https://rest-api-spring-postgres-modular.onrender.com/user/task/read-user-tasks";
+const URL_READ_ACTIVE = "https://rest-api-spring-postgres-modular.onrender.com/user/task/read-user-tasks/active";
+const URL_READ_COMPLETE = "https://rest-api-spring-postgres-modular.onrender.com/user/task/read-user-tasks/complete";
+const URL_READ_STATUS = "https://rest-api-spring-postgres-modular.onrender.com/user/task/read-user-tasks/status";
 
 
 export function Screen () {

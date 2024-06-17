@@ -14,7 +14,7 @@ export default function RegisterContent () {
     const [type, setType] = useState("password");
     const [icon, setIcon] = useState(eyeOff);
 
-    const url = "http://localhost:8080/user";
+    const url = "https://rest-api-spring-postgres-modular.onrender.com/user";
 
     const navigate = useNavigate();
 

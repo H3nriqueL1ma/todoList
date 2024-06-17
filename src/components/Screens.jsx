@@ -238,7 +238,7 @@ export function ScreenHome () {
     }
 
     async function deleteTask (taskID) {
-        const url_delete = `http://localhost:8080/user/task/delete-user-task/${taskID}`;
+        const url_delete = `https://rest-api-spring-postgres-modular.onrender.com/user/task/delete-user-task/${taskID}`;
         try {
             await deleteTask_(url_delete, taskID);
             await loadTasks(username);

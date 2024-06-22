@@ -15,11 +15,11 @@ import { Forget, ForgetVerify } from './ForgetPass';
 import { setButtonClasses } from './functionsForHome/functionsHome';
 import Loading from './errorsAndLoadings/LoadingAnimation';
 
-const URL_CREATE = "https://rest-api-spring-postgres-modular.onrender.com/user/task";
-const URL_READ = "https://rest-api-spring-postgres-modular.onrender.com/user/task/read-user-tasks";
-const URL_READ_ACTIVE = "https://rest-api-spring-postgres-modular.onrender.com/user/task/read-user-tasks/active";
-const URL_READ_COMPLETE = "https://rest-api-spring-postgres-modular.onrender.com/user/task/read-user-tasks/complete";
-const URL_READ_STATUS = "https://rest-api-spring-postgres-modular.onrender.com/user/task/read-user-tasks/status";
+const URL_CREATE = "https://spring-docker-api-todolist.azurewebsites.net/user/task";
+const URL_READ = "https://spring-docker-api-todolist.azurewebsites.net/user/task/read-user-tasks";
+const URL_READ_ACTIVE = "https://spring-docker-api-todolist.azurewebsites.net/user/task/read-user-tasks/active";
+const URL_READ_COMPLETE = "https://spring-docker-api-todolist.azurewebsites.net/user/task/read-user-tasks/complete";
+const URL_READ_STATUS = "https://spring-docker-api-todolist.azurewebsites.net/user/task/read-user-tasks/status";
 
 
 export function Screen () {
@@ -238,7 +238,7 @@ export function ScreenHome () {
     }
 
     async function deleteTask (taskID) {
-        const url_delete = `https://rest-api-spring-postgres-modular.onrender.com/user/task/delete-user-task/${taskID}`;
+        const url_delete = `https://spring-docker-api-todolist.azurewebsites.net/user/task/delete-user-task/${taskID}`;
         try {
             await deleteTask_(url_delete, taskID);
             await loadTasks(username);

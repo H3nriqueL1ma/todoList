@@ -15,7 +15,7 @@ export default function LoginContent () {
     const [type, setType] = useState("password");
     const [icon, setIcon] = useState(eyeOff);
 
-    const url = "https://rest-api-spring-postgres-modular.onrender.com/user/login";
+    const url = "https://spring-docker-api-todolist.azurewebsites.net/user/login";
 
     const navigate = useNavigate();
 

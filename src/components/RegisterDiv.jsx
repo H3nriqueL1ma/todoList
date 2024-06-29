@@ -14,7 +14,7 @@ export default function RegisterContent () {
     const [type, setType] = useState("password");
     const [icon, setIcon] = useState(eyeOff);
 
-    const url = "https://spring-docker-api-todolist.azurewebsites.net/user";
+    const url = "https://spring-todolist-api.azurewebsites.net/user";
 
     const navigate = useNavigate();
 

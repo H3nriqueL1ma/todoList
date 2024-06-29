@@ -15,7 +15,7 @@ export function Forget () {
     const navigate = useNavigate();
 
     async function SubmitForm(data) {
-        const url = `https://spring-docker-api-todolist.azurewebsites.net/user/email-verify/${data.email}`;
+        const url = `https://spring-todolist-api.azurewebsites.net/user/email-verify/${data.email}`;
 
         if (data.email === "") {
             setTextModal("Campo 'E-mail' em branco! Digite seu e-mail.");
@@ -78,7 +78,7 @@ export function ForgetVerify () {
     const [icon, setIcon] = useState(eyeOff);
 
     const navigate = useNavigate();
-    const url = "https://spring-docker-api-todolist.azurewebsites.net/user/reset-pass";
+    const url = "https://spring-todolist-api.azurewebsites.net/user/reset-pass";
 
     function isEdge () {
         return window.navigator.userAgent.indexOf("Edg") > 1;

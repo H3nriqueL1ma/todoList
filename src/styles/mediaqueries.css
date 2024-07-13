@@ -122,16 +122,158 @@
     #image-initial-screen {
         width: 800px;
     }
+
+    #text {
+        max-width: 700px;
+    }
+
+    #text h1 {
+        font-size: 40px;
+    }
 }
 
 @media screen and (max-width: 840px) {
     #image-initial-screen {
         width: 750px;
     }
+
+    #text h1 {
+        font-size: 35px;
+    }
+
+    #text h5 {
+        font-size: 18px;
+    }
 }
 
 @media screen and (max-width: 790px) {
     #image {
         display: none;
+    }
+
+    #tasks {
+        width: 650px;
+    }
+
+    #text-task {
+        max-width: 500px;
+    }
+
+    #tasks-options {
+        max-width: 650px;
+    }
+
+    #text h1 {
+        font-size: 28px;
+    }
+
+    
+    #text h5 {
+        font-size: 15px;
+    }
+}
+
+@media screen and (max-width: 670px) {
+    #tasks {
+        width: 500px;
+    }
+
+    #text-task {
+        max-width: 350px;
+    }
+
+    #tasks-options {
+        max-width: 500px;
+    }
+
+    #text h1 {
+        font-size: 26px;
+    }
+}
+
+@media screen and (max-width: 525px) {
+    #tasks {
+        width: 400px;
+    }
+
+    #text-task {
+        max-width: 250px;
+    }
+
+    #tasks-options {
+        max-width: 400px;
+    }
+}
+
+@media screen and (max-width: 470px) {
+    #tasks {
+        width: 350px;
+    }
+
+    #text-task {
+        max-width: 200px;
+    }
+
+    #tasks-options {
+        max-width: 350px;
+    }
+
+    #new-todo {
+        width: 280px;
+        font-size: 16px;
+    }
+
+    #container-home #hello-user {
+        font-size: 20px;
+    }
+
+    #row-title-input a {
+        font-size: 20px;
+    }
+}
+
+@media screen and (max-width: 420px) {
+    #new-todo {
+        width: 230px;
+        font-size: 15px;
+    }
+
+    #tasks {
+        width: 330px;
+    }
+
+    #text-task {
+        max-width: 180px;
+    }
+
+    #tasks-options {
+        max-width: 330px;
+    }
+
+    #container-home #hello-user {
+        font-size: 18px;
+    }
+
+    #row-title-input a {
+        font-size: 18px;
+    }
+}
+
+@media screen and (max-width: 370px) {
+    #new-todo {
+        width: 200px;
+        font-size: 15px;
+    }
+
+    #tasks {
+        width: 330px;
+    }
+
+    #text-task {
+        max-width: 180px;
+    }
+
+    #tasks-options {
+        max-width: 330px;
     }
 }
